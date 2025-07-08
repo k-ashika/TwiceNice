@@ -1,5 +1,14 @@
 # Twice Nice – Thrift Store Web Application
 
+# Twice Nice – Thrift Store Web Application
+
+![Top Language](https://img.shields.io/github/languages/top/k-ashika/TwiceNice)
+![Last Commit](https://img.shields.io/github/last-commit/k-ashika/TwiceNice)
+![Repo Size](https://img.shields.io/github/repo-size/k-ashika/TwiceNice)
+
+"Twice Nice" is a full-stack e-commerce website...
+
+
 "Twice Nice" is a full-stack e-commerce website that allows users to buy thrifted clothing and accessories. It includes user and admin roles, real-time payment integration, return system, and more.
 
 ## 💻 Technologies Used
