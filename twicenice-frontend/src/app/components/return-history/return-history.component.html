@@ -1,0 +1,104 @@
+<div class="container mt-4">
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h2 class="mb-0">Your Return History</h2>
+    <div class="d-flex align-items-center">
+      <span class="me-2">Filter:</span>
+      <select class="form-select form-select-sm" style="width: 150px;" (change)="filterReturns($event)">
+        <option value="all">All Returns</option>
+        <option value="PENDING">Pending</option>
+        <option value="APPROVED">Approved</option>
+        <option value="REJECTED">Rejected</option>
+        <option value="PROCESSED">Processed</option>
+      </select>
+    </div>
+  </div>
+  
+  @if (errorMessage) {
+    <div class="alert alert-danger alert-dismissible fade show">
+      {{ errorMessage }}
+      <button type="button" class="btn-close" (click)="errorMessage = null"></button>
+    </div>
+  }
+
+  @if (isLoading) {
+    <div class="text-center py-5">
+      <div class="spinner-grow text-primary" role="status">
+        <span class="visually-hidden">Loading...</span>
+      </div>
+      <p class="mt-2 text-muted">Loading your returns...</p>
+    </div>
+  }
+
+  @if (!isLoading && returns.length === 0 && !errorMessage) {
+    <div class="card border-0 shadow-sm">
+      <div class="card-body text-center py-5">
+        <i class="bi bi-box-seam display-5 text-muted mb-3"></i>
+        <h5 class="mb-2">No return requests found</h5>
+        <p class="text-muted">You haven't made any return requests yet.</p>
+        <a routerLink="/shop" class="btn btn-primary mt-3">Continue Shopping</a>
+      </div>
+    </div>
+  }
+
+  @if (!isLoading && returns.length > 0) {
+    <div class="card border-0 shadow-sm">
+      <div class="table-responsive">
+        <table class="table table-hover mb-0">
+          <thead class="table-light">
+            <tr>
+              <th>Return ID</th>
+              <th>Order ID</th>
+              <th>Date</th>
+              <th>Status</th>
+              <th>Reason</th>
+              <th>Items</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (return of filteredReturns || returns; track return.id) {
+              <tr>
+                <td class="fw-semibold">#{{ return.id }}</td>
+                <td>#{{ return.orderId }}</td>
+                <td>{{ return.requestDate | date:'MMM d, y, h:mm a' }}</td>
+                <td>
+                  <span class="badge rounded-pill" [class]="getBadgeClass(return.status)">
+                    {{ return.status }}
+                  </span>
+                </td>
+                <td>{{ return.reason }}</td>
+                <td>
+                  <span class="d-flex align-items-center">
+                    <i class="bi bi-box-seam me-2"></i>
+                    {{ return.items.length }} item{{ return.items.length !== 1 ? 's' : '' }}
+                  </span>
+                </td>
+                <td>
+                  @if (return.status === 'PENDING') {
+                    <button (click)="deleteReturn(return.id)" 
+                            class="btn btn-outline-danger btn-sm rounded-pill">
+                      <i class="bi bi-trash"></i> Cancel
+                    </button>
+                  }
+                  @if (return.adminComments) {
+    <div class="admin-comment">
+      <i class="bi bi-chat-left-text me-1"></i>
+      {{ return.adminComments }}
+    </div>
+  }
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    </div>
+    
+    <div class="d-flex justify-content-between align-items-center mt-3">
+      <small class="text-muted">Showing {{ returns.length }} return{{ returns.length !== 1 ? 's' : '' }}</small>
+      <button class="btn btn-sm btn-outline-primary" (click)="refreshReturns()">
+        <i class="bi bi-arrow-clockwise"></i> Refresh
+      </button>
+    </div>
+  }
+</div>

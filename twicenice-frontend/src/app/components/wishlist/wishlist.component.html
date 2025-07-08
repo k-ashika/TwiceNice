@@ -1,0 +1,36 @@
+<div class="wishlist-container">
+  <h2>Your Wishlist</h2>
+  
+  <div *ngIf="wishlistItems.length === 0" class="empty-state">
+    <i class="fas fa-heart"></i>
+    <p>Your wishlist is currently empty</p>
+    <button (click)="browseMore()">
+      <i class="fas fa-search"></i> Browse Products
+    </button>
+  </div>
+
+  <div class="product-grid">
+    <div class="product-card" *ngFor="let product of wishlistItems">
+      <div class="wishlist-badge">
+        <i class="fas fa-heart"></i>
+      </div>
+      <div class="image-wrapper">
+        <img [src]="'http://localhost:8080' + product.imageUrl" 
+             [alt]="product.name"
+             (error)="handleImageError($event)">
+      </div>
+      <div class="product-info">
+        <h3>{{ product.name }}</h3>
+        <p class="price">₹{{ product.price | number:'1.2-2' }}</p>
+        <div class="actions">
+          <button class="add-to-cart" (click)="moveToCart(product.id!)">
+            <i class="fas fa-shopping-cart"></i> Add to Cart
+          </button>
+          <button class="remove" (click)="removeFromWishlist(product.id!)">
+            <i class="fas fa-trash-alt"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,80 @@
+<div class="container mt-4">
+  <h3>Shop Sustainable Fashion</h3>
+
+  <!-- Filter Section -->
+  <div class="filter-section">
+    <div class="row g-3">
+      <div class="col-md-3">
+        <label>Category</label>
+        <select [(ngModel)]="selectedCategory" (change)="filterProducts()" class="form-select">
+          <option value="">All Categories</option>
+          <option *ngFor="let cat of categories" [value]="cat">{{ cat }}</option>
+        </select>
+      </div>
+      
+      <div class="col-md-3">
+        <label>Max Price (₹)</label>
+        <div class="d-flex align-items-center">
+          <input type="range" min="0" max="10000" [(ngModel)]="priceLimit" (change)="filterProducts()" class="form-range">
+          <span class="price-display">₹{{ priceLimit }}</span>
+        </div>
+      </div>
+      
+      <div class="col-md-3">
+        <label>Search Products</label>
+        <input type="text" class="form-control" placeholder="Search by name..." [(ngModel)]="searchTerm" (input)="filterProducts()">
+      </div>
+      
+      <div class="col-md-3">
+        <label>Sort By</label>
+        <select [(ngModel)]="sortOption" (change)="sortProducts()" class="form-select">
+          <option value="">Default</option>
+          <option value="priceAsc">Price: Low to High</option>
+          <option value="priceDesc">Price: High to Low</option>
+          <option value="nameAsc">Name: A → Z</option>
+          <option value="nameDesc">Name: Z → A</option>
+        </select>
+      </div>
+    </div>
+  </div>
+
+  <!-- Product Grid -->
+  <div class="product-grid">
+    <div *ngFor="let product of paginatedProducts" class="card">
+      <div class="card-img-container">
+        <a [routerLink]="['/product', product.id]">
+          <img class="card-img-top" [src]="product.imageUrl" alt="{{ product.name }}" 
+               onerror="this.src='https://via.placeholder.com/300?text=No+Image'">
+        </a>
+      </div>
+      <div class="card-body">
+        <h5 class="card-title">{{ product.name }}</h5>
+        <p class="card-text">{{ product.description }}</p>
+        <div class="mt-auto">
+          <p class="price">₹{{ product.price }}</p>
+          <p *ngIf="product.stock === 0" class="out-of-stock">Out of Stock</p>
+          <button class="add-to-cart-btn" 
+                  (click)="addToCart(product)" 
+                  [disabled]="product.stock === 0">
+            <i class="fas fa-shopping-cart"></i> Add to Cart
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Pagination -->
+  <nav *ngIf="filteredProducts.length > itemsPerPage" class="mt-4">
+    <ul class="pagination">
+      <li class="page-item" [class.disabled]="currentPage === 1">
+        <button class="page-link" (click)="currentPage = currentPage - 1">&laquo;</button>
+      </li>
+      <li class="page-item" *ngFor="let page of totalPagesArray" [class.active]="page === currentPage">
+        <button class="page-link" (click)="currentPage = page">{{ page }}</button>
+      </li>
+      <li class="page-item" [class.disabled]="currentPage === totalPages">
+        <button class="page-link" (click)="currentPage = currentPage + 1">&raquo;</button>
+      </li>
+    </ul>
+  </nav>
+</div>

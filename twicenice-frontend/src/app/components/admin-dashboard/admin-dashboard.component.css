@@ -1,0 +1,155 @@
+/* ===== BASE STYLES ===== */
+body {
+  font-family: 'Inter', -apple-system, sans-serif;
+  font-weight: 350;
+  background-color: #f8fafc;
+}
+
+/* ===== SIDEBAR ===== */
+.sidebar {
+  background-color: #ffffff;  /* Pure white */
+  border-right: 1px solid #e2e8f0;
+  box-shadow: 2px 0 8px rgba(0, 0, 0, 0.03);
+}
+
+.sidebar h4 {
+  color: #198754;  /* Your green */
+  font-weight: 500;
+  padding: 20px 0;
+  margin: 0 20px;
+  border-bottom: 1px solid #f1f5f9;
+}
+
+.nav-item {
+  margin: 4px 15px;
+  transition: all 0.2s ease;
+}
+
+.nav-link {
+  color: #64748b !important;  /* Soft gray */
+  font-weight: 400;
+  padding: 8px 12px;
+  border-radius: 6px;
+}
+
+.nav-link:hover {
+  background-color: #f1f5f9;
+  color: #198754 !important;  /* Green on hover */
+}
+
+.nav-link.active {
+  background-color: rgba(25, 135, 84, 0.1);
+  color: #198754 !important;
+}
+
+/* ===== CARDS ===== */
+.dashboard-card {
+  background: white;
+  border: none;
+  border-radius: 10px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.03);
+  transition: transform 0.2s ease;
+}
+
+.dashboard-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.dashboard-card h5 {
+  color: #64748b;
+  font-weight: 400;
+  font-size: 0.9rem;
+}
+
+.dashboard-card h3 {
+  color: #1e293b;
+  font-weight: 500;
+}
+
+/* ===== TABLES ===== */
+.dashboard-table {
+  border: 1px solid #f1f5f9;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.dashboard-table thead th {
+  background-color: #f8fafc;
+  color: #198754;
+  font-weight: 500;
+  padding: 12px 16px;
+  border-bottom: 2px solid #e2e8f0;
+}
+
+.dashboard-table tbody td {
+  padding: 12px 16px;
+  border-top: 1px solid #f1f5f9;
+  transition: background 0.2s ease;
+}
+
+.dashboard-table tbody tr:hover {
+  background-color: #f8fafc;
+}
+
+/* ===== STATUS BADGES ===== */
+.badge {
+  font-weight: 500;
+  padding: 5px 10px;
+  border-radius: 6px;
+  font-size: 0.75rem;
+}
+
+.badge-success {
+  background-color: rgba(25, 135, 84, 0.1);
+  color: #198754;
+}
+
+.badge-warning {
+  background-color: rgba(255, 193, 7, 0.1);
+  color: #d97706;
+}
+
+.badge-danger {
+  background-color: rgba(220, 53, 69, 0.1);
+  color: #dc3545;
+}
+
+/* ===== CHART ===== */
+.chart-container {
+  background: white;
+  border-radius: 10px;
+  padding: 20px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.03);
+  max-width: 400px;  /* Smaller chart */
+  margin: 0 auto;
+}
+
+/* ===== SECTION HEADERS ===== */
+.section-header {
+  color: #1e293b;
+  font-weight: 500;
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+}
+
+.section-header:after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: #e2e8f0;
+  margin-left: 16px;
+}
+
+/* ===== RATINGS ===== */
+.rating-stars {
+  color: #f59e0b;
+  letter-spacing: 2px;
+}
+
+/* ===== MAIN CONTENT ===== */
+.main-content {
+  background-color: #f8fafc;
+  padding: 30px;
+}

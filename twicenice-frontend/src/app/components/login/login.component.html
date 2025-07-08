@@ -1,0 +1,71 @@
+<div class="login-wrapper">
+  <div class="login-card">
+    <h2 class="login-title">
+  <span class="brand">Welcome to</span><br>
+  <!-- <span class="twicename">TwiceNice <i class="bi bi-stars"></i></span> -->
+   <span class="twicename">TwiceNice</span>
+
+</h2>
+
+
+
+    <form (ngSubmit)="loginUser()" #loginForm="ngForm">
+      <div class="form-group">
+        <label for="email" class="form-label">Email</label>
+        <input 
+          type="email" 
+          id="email"
+          [(ngModel)]="credentials.email" 
+          name="email" 
+          class="form-control" 
+          required
+          email
+          placeholder="Enter your email"
+          #email="ngModel"
+        >
+      </div>
+
+      <div class="form-group password-wrapper">
+  <input 
+    [type]="showPassword ? 'text' : 'password'" 
+    id="password"
+    [(ngModel)]="credentials.password" 
+    name="password" 
+    class="form-control" 
+    required
+    minlength="6"
+    placeholder="Enter your password"
+  >
+  <button type="button" class="password-toggle" (click)="togglePassword()">
+    <i class="bi" [ngClass]="showPassword ? 'bi-eye-slash' : 'bi-eye'"></i>
+  </button>
+</div>
+
+      <button 
+        type="submit" 
+        class="login-btn"
+        [disabled]="loginForm.invalid"
+      >
+        <i class="bi bi-box-arrow-in-right"></i> Login
+      </button>
+
+      <div class="divider">or continue with</div>
+
+      <div class="social-login">
+        <button type="button" class="social-btn">
+          <i class="bi bi-google"></i>
+        </button>
+        <button type="button" class="social-btn">
+          <i class="bi bi-facebook"></i>
+        </button>
+        <button type="button" class="social-btn">
+          <i class="bi bi-instagram"></i>
+        </button>
+      </div>
+
+      <div class="signup-link">
+        Don't have an account? <a routerLink="/register">Sign up</a>
+      </div>
+    </form>
+  </div>
+</div>

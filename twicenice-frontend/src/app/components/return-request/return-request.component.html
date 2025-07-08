@@ -1,0 +1,167 @@
+<div class="return-container">
+  <!-- Loading state -->
+  @if (isLoading) {
+    <div class="loading-state">
+      <div class="spinner"></div>
+      <p>Getting your order ready...</p>
+    </div>
+  }
+
+  <!-- Main content -->
+  @if (!isLoading && order) {
+    <div class="return-header">
+      <h1>Return Request</h1>
+      <p class="order-number">Order #{{orderId}}</p>
+
+      <div class="progress-steps">
+        <div class="step active">
+          <div class="step-number">1</div>
+          <div class="step-label">Select Items</div>
+        </div>
+        <div class="step">
+          <div class="step-number">2</div>
+          <div class="step-label">Review</div>
+        </div>
+        <div class="step">
+          <div class="step-number">3</div>
+          <div class="step-label">Complete</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Order summary -->
+    <div class="order-summary card">
+      <div class="summary-item">
+        <span class="summary-label">Order Date</span>
+        <span class="summary-value">{{order.createdAt | date:'MMM d, y'}}</span>
+      </div>
+      <div class="summary-item">
+        <span class="summary-label">Status</span>
+        <span class="status-badge" [ngClass]="getBadgeClass(order.status)">
+          {{order.status}}
+        </span>
+      </div>
+      <div class="summary-item">
+        <span class="summary-label">Return By</span>
+        <span class="summary-value">{{order.returnWindowEnd | date:'MMM d, y'}}</span>
+      </div>
+    </div>
+
+    <!-- Return eligibility -->
+    @if (!canReturnOrder()) {
+      <div class="alert-card error card">
+        <div class="alert-icon">⚠️</div>
+        <div class="alert-content">
+          <h3>Return Window Closed</h3>
+          <p>This order can no longer be returned.</p>
+          <p class="small-text">
+            Ordered {{order.createdAt | date:'MMM d, y'}} • 
+            Return window closed {{getReturnWindowEnd() | date:'MMM d, y'}}
+          </p>
+        </div>
+      </div>
+    }
+
+    <!-- Items to return -->
+    @if (canReturnOrder()) {
+      <div class="items-section">
+        <h2 class="section-title">Select Items to Return</h2>
+        <p class="section-subtitle">Check the items you want to send back</p>
+
+        <div class="items-list">
+          @for (item of order.items; track item.id) {
+            <div class="item-card card" 
+                 [class.disabled]="!canReturnItem(item)"
+                 (click)="handleItemClick(item, $event)">
+              <div class="item-image-container">
+                <div class="position-relative">
+                  <img 
+                    [src]="'http://localhost:8080/api/products/images/' + item.imageUrl" 
+                    (error)="handleImageError($event)"
+                    [alt]="item.productName"
+                    width="100"
+                    height="100"
+                    class="item-image rounded shadow-sm">
+
+                  @if (selectedItems[item.id]) {
+                    <div class="selected-badge bg-success">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="white" viewBox="0 0 16 16">
+                        <path d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z"/>
+                      </svg>
+                    </div>
+                  }
+
+                  @if (item.quantity > 1) {
+                    <span class="quantity-badge bg-success">{{item.quantity}}</span>
+                  }
+                </div>
+              </div>
+
+              <div class="item-info">
+                <h3>{{item.productName}}</h3>
+                <p class="item-meta">Quantity: {{item.quantity}}</p>
+                <p class="item-price">₹{{item.price | number:'1.2-2'}}</p>
+
+                @if (!canReturnItem(item)) {
+                  <div class="item-warning">⚠️ Already has active return</div>
+                }
+
+                @if (canReturnItem(item) && selectedItems[item.id]) {
+                  <div class="reason-dropdown">
+                    <label for="reason-{{item.id}}" class="d-block mb-2 small text-muted">Select reason:</label>
+                    <select id="reason-{{item.id}}" [(ngModel)]="returnReasons[item.id]">
+                      <option value="">Select return reason</option>
+                      <option value="Wrong size">Wrong size</option>
+                      <option value="Not as described">Not as described</option>
+                      <option value="Damaged">Damaged</option>
+                      <option value="Changed my mind">Changed my mind</option>
+                      <option value="Other">Other</option>
+                    </select>
+                  </div>
+                }
+              </div>
+            </div>
+          }
+        </div>
+      </div>
+
+      <!-- Additional Info -->
+      <div class="additional-info card">
+        <h2 class="section-title">Tell Us More</h2>
+        <p class="section-subtitle">Help us improve your experience</p>
+
+        <div class="info-textarea">
+          <label for="return-details" class="d-block mb-2 small text-muted">Provide details:</label>
+          <textarea id="return-details" [(ngModel)]="generalReason"
+                    placeholder="Please provide any specific issues or additional details about your return..."></textarea>
+        </div>
+      </div>
+
+      <!-- Action Buttons -->
+      <div class="action-buttons mt-4" style="position: static; box-shadow: none; border-top: none; padding: 0; margin-top: 2rem;">
+        <button class="back-button" (click)="goBack()">
+          ← Back to Orders
+        </button>
+
+        <button class="continue-button"
+                style="background: #198754;"
+                (click)="submitReturn()"
+                [disabled]="false">
+          Continue →
+        </button>
+      </div>
+    }
+  }
+
+  <!-- Error state -->
+  @if (!isLoading && !order) {
+    <div class="alert-card error card">
+      <div class="alert-icon">❌</div>
+      <div class="alert-content">
+        <h3>Oops! Something went wrong</h3>
+        <p>We couldn't load your order details.</p>
+        <button class="retry-button" (click)="loadOrderDetails()">Try Again</button>
+      </div>
+    </div>
+  }
+</div>

@@ -1,0 +1,62 @@
+<mat-toolbar class="navbar" color="primary">
+  <!-- Left-aligned logo and main links -->
+  <div class="header-left">
+    <span class="brand">TwiceNice</span>
+    <a mat-button routerLink="/" class="nav-link">Home</a>
+    <a mat-button routerLink="/shop" class="nav-link">Shop</a>
+  </div>
+
+  <!-- Right-aligned icons -->
+  <div class="header-right">
+    <!-- Wishlist (direct link) -->
+    <a mat-icon-button routerLink="/wishlist" *ngIf="isLoggedIn() && !isAdmin()">
+      <mat-icon [matBadge]="wishlistCount" matBadgeColor="warn">favorite</mat-icon>
+    </a>
+
+    <!-- Cart (direct link) -->
+    <a mat-icon-button routerLink="/cart">
+      <mat-icon [matBadge]="cartCount" matBadgeColor="warn">shopping_cart</mat-icon>
+    </a>
+
+    <!-- Profile Menu -->
+    <button mat-icon-button [matMenuTriggerFor]="profileMenu">
+      <mat-icon>account_circle</mat-icon>
+    </button>
+
+    <!-- Profile Dropdown Menu -->
+    <mat-menu #profileMenu="matMenu">
+      @if (isLoggedIn()) {
+        <button *ngIf="!isAdmin()" mat-menu-item routerLink="/user/profile">
+          <mat-icon>person</mat-icon>
+          <span>My Profile</span>
+        </button>
+        <button *ngIf="isAdmin()" mat-menu-item routerLink="/admin-dashboard">
+          <mat-icon>admin_panel_settings</mat-icon>
+          <span>Admin</span>
+        </button>
+        <!-- Moved Orders here -->
+        <button mat-menu-item routerLink="/orders">
+          <mat-icon>list_alt</mat-icon>
+          <span>Orders</span>
+        </button>
+        <button mat-menu-item routerLink="/returns/history">
+          <mat-icon>swap_horiz</mat-icon>
+          <span>Returns</span>
+        </button>
+        <button mat-menu-item (click)="logout()">
+          <mat-icon>logout</mat-icon>
+          <span>Logout</span>
+        </button>
+      } @else {
+        <button mat-menu-item routerLink="/login">
+          <mat-icon>login</mat-icon>
+          <span>Login</span>
+        </button>
+        <button mat-menu-item routerLink="/register">
+          <mat-icon>person_add</mat-icon>
+          <span>Register</span>
+        </button>
+      }
+    </mat-menu>
+  </div>
+</mat-toolbar>

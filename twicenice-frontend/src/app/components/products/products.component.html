@@ -1,0 +1,23 @@
+<div class="product-container">
+  <h2 *ngIf="selectedCategory">Showing {{ selectedCategory }} Products</h2>
+  <h2 *ngIf="!selectedCategory">All Products</h2>
+
+  <div class="product-grid">
+    <div class="product-card" *ngFor="let product of products">
+     <!-- ✅ Just use product.imageUrl directly -->
+ <img [src]="'http://localhost:8080/api/products/images/' + product.imageUrl" (error)="handleImageError($event)"
+
+           class="img-fluid"
+           alt="{{product.name}}">
+      <h3>{{product.name}}</h3>
+      <p>{{product.description}}</p>
+      <strong>₹{{product.price}}</strong>
+      <button class="wishlist-btn" (click)="toggleWishlist(product)">
+        <i class="fas" 
+           [class.fa-heart]="isProductInWishlist(product.id)" 
+           [class.fa-heart-o]="!isProductInWishlist(product.id)"></i>
+      </button>
+      <button (click)="addToCart(product.id!)">Add to Cart</button>
+    </div>
+  </div>
+</div>

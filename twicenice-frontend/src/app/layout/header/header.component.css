@@ -1,0 +1,63 @@
+.navbar {
+  background-color: #00a86b;
+  padding: 0 2rem;
+  color: white;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: relative;
+  z-index: 1000;
+}
+
+/* Left-aligned items */
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.brand {
+  font-weight: bold;
+  font-size: 1.5rem;
+  margin-right: 1rem;
+}
+
+.nav-link {
+  color: white;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+}
+
+/* Right-aligned icons */
+.header-right {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+/* Dropdown menu styling */
+.mat-menu-content {
+  padding: 0 !important;
+}
+
+.mat-menu-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+/* Mobile responsiveness */
+@media (max-width: 768px) {
+  .navbar {
+    padding: 0 1rem;
+  }
+  
+  .header-left {
+    gap: 0.5rem;
+  }
+  
+  .nav-link span {
+    display: none;
+  }
+}

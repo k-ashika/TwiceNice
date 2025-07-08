@@ -1,0 +1,181 @@
+<div class="d-flex" style="min-height: 100vh;">
+  <!-- Clean Light Sidebar -->
+  <div class="sidebar p-0" style="width: 240px;">
+    <h4 class="text-center mb-0 py-4">TWICENICE</h4>
+    <ul class="nav flex-column mt-2 px-3">
+      <li class="nav-item">
+        <a routerLink="/admin-dashboard" class="nav-link active">
+          <i class="fas fa-tachometer-alt me-2"></i> Dashboard
+        </a>
+      </li>
+      <li class="nav-item">
+        <a routerLink="/admin-products" class="nav-link">
+          <i class="fas fa-tshirt me-2"></i> Products
+        </a>
+      </li>
+      <li class="nav-item">
+        <a routerLink="/admin-orders" class="nav-link">
+          <i class="fas fa-shopping-bag me-2"></i> Orders
+        </a>
+      </li>
+      <li class="nav-item">
+        <a routerLink="/admin-users" class="nav-link">
+          <i class="fas fa-users me-2"></i> Users
+        </a>
+      </li>
+      <li class="nav-item">
+        <a routerLink="/admin-reviews" class="nav-link">
+          <i class="fas fa-star me-2"></i>  Reviews
+        </a>
+      </li>
+      <li class="nav-item">
+        <a routerLink="/admin-returns" class="nav-link">
+          <i class="fas fa-exchange-alt me-2"></i>  Returns
+        </a>
+      </li>
+      <li class="nav-item">
+        <a routerLink="/admin-profile" class="nav-link">
+          <i class="fas fa-user-cog me-2"></i>  Profile
+        </a>
+      </li>
+      <li class="nav-item mt-3">
+        <a (click)="logout()" class="nav-link text-danger">
+          <i class="fas fa-sign-out-alt me-2"></i> Logout
+        </a>
+      </li>
+    </ul>
+  </div>
+
+  <!-- Main Content Area -->
+  <div class="main-content flex-grow-1">
+    <div class="container-fluid">
+      <h2 class="mb-4" style="color: #198754;">Admin Dashboard</h2>
+
+      <!-- Summary Cards -->
+      <div class="row mb-4">
+        <div class="col-xl-3 col-md-6 mb-4" *ngFor="let card of [
+            { title: 'Total Users', value: summary.totalUsers, icon: 'users' },
+            { title: 'Total Products', value: summary.totalProducts, icon: 'tshirt' },
+            { title: 'Total Orders', value: summary.totalOrders, icon: 'shopping-bag' },
+            { title: 'Total Revenue', value: '₹' + summary.totalRevenue, icon: 'rupee-sign' }
+          ]">
+          <div class="card dashboard-card h-100">
+            <div class="card-body">
+              <div class="d-flex align-items-center">
+                <div>
+                  <h5 class="mb-2">{{ card.title }}</h5>
+                  <h3 class="mb-0">{{ card.value }}</h3>
+                </div>
+                <div class="ms-auto">
+                  <i class="fas fa-{{card.icon}}" style="color: #198754; font-size: 1.8rem;"></i>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Chart (Smaller & Centered) -->
+      <div class="row mb-5">
+        <div class="col-md-6 mx-auto">
+          <div class="chart-container">
+            <h5 class="text-center mb-3" style="color: #198754;">Order Status</h5>
+            <canvas baseChart
+                    [data]="chartData"
+                    [type]="pieChartType"
+                    [options]="{
+                      responsive: true,
+                      plugins: {
+                        legend: {
+                          position: 'bottom',
+                          labels: {
+                            font: {
+                              size: 12
+                            }
+                          }
+                        }
+                      }
+                    }">
+            </canvas>
+          </div>
+        </div>
+      </div>
+
+      <!-- Recent Orders -->
+      <div class="row">
+        <div class="col-lg-8">
+          <h4 class="section-header">
+            <i class="fas fa-shopping-bag me-2"></i> Recent Orders
+          </h4>
+          <div class="card dashboard-card">
+            <div class="card-body p-0">
+              <div class="table-responsive">
+                <table class="table dashboard-table">
+                  <thead>
+                    <tr>
+                      <th>Order ID</th>
+                      <th>User</th>
+                      <th>Date</th>
+                      <th>Amount</th>
+                      <th>Status</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let order of recentOrders">
+                      <td>#{{ order.id }}</td>
+                      <td>User {{ order.userId }}</td>
+                      <td>{{ order.createdAt | date: 'MMM d, h:mm a' }}</td>
+                      <td>₹{{ order.totalPrice }}</td>
+                      <td>
+                        <span class="badge" [ngClass]="{
+                          'badge-success': order.status === 'DELIVERED',
+                          'badge-warning': order.status === 'PLACED',
+                          'badge-danger': order.status === 'CANCELLED'
+                        }">
+                          {{ order.status }}
+                        </span>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Recent Reviews -->
+        <div class="col-lg-4">
+          <h4 class="section-header">
+            <i class="fas fa-star me-2"></i> Recent Reviews
+          </h4>
+          <div class="card dashboard-card">
+            <div class="card-body p-0">
+              <div class="table-responsive">
+                <table class="table dashboard-table">
+                  <thead>
+                    <tr>
+                      <th>Product</th>
+                      <th>Rating</th>
+                      <th>Comment</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let review of recentReviews">
+                      <td>#{{ review.productId }}</td>
+                      <td>
+                        <span class="rating-stars">
+                          {{ '★'.repeat(review.rating) }}{{ '☆'.repeat(5 - review.rating) }}
+                        </span>
+                      </td>
+                      <td class="text-truncate" style="max-width: 150px;">{{ review.comment }}</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

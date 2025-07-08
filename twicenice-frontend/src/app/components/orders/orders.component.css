@@ -1,0 +1,108 @@
+/* Base styles */
+.product-image {
+  object-fit: cover;
+  background-color: #f8f9fa;
+  border: 1px solid #e9ecef;
+  display: block;
+  min-width: 80px;
+  min-height: 80px;
+  transition: transform 0.3s ease;
+}
+
+.product-image:hover {
+  transform: scale(1.03);
+}
+
+.product-image.image-error {
+  object-fit: contain;
+  padding: 10px;
+  background-color: #f8f9fa;
+  border: 1px dashed #dee2e6;
+}
+
+/* Card styles */
+.card {
+  border-radius: 12px;
+  overflow: hidden;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  border: 1px solid rgba(25, 135, 84, 0.1) !important;
+}
+
+.card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(25, 135, 84, 0.1) !important;
+}
+
+.list-group-item {
+  border-radius: 8px !important;
+  margin-bottom: 8px;
+}
+
+/* Button styles */
+.btn-success {
+  background-color: #198754;
+  border-color: #198754;
+}
+
+.btn-outline-success {
+  color: #198754;
+  border-color: #198754;
+}
+
+.btn-outline-success:hover {
+  background-color: #198754;
+  color: white;
+}
+
+.bg-gradient {
+  background-image: linear-gradient(to right, #198754, #2ecc71);
+}
+
+/* Badge styles */
+.badge {
+  font-weight: 500;
+  letter-spacing: 0.5px;
+  padding: 0.35em 0.65em;
+}
+
+/* Status badge colors - adjusted for green theme */
+.bg-primary {
+  background-color: #198754 !important;
+}
+
+.bg-warning {
+  background-color: #ffc107 !important;
+  color: #000 !important;
+}
+
+.bg-success {
+  background-color: #28a745 !important;
+}
+
+.bg-danger {
+  background-color: #dc3545 !important;
+}
+
+/* Text colors */
+.text-success {
+  color: #198754 !important;
+}
+
+/* Background opacities */
+.bg-opacity-10 {
+  background-color: rgba(25, 135, 84, 0.1) !important;
+}
+
+.border-opacity-25 {
+  border-color: rgba(25, 135, 84, 0.25) !important;
+}
+:root {
+  --twicenice-green: #198754;
+  --twicenice-green-light: #d1e7dd;
+  --twicenice-green-lighter: #e8f3ee;
+}
+
+body {
+  --bs-primary: var(--twicenice-green);
+  --bs-primary-rgb: 25, 135, 84;
+}

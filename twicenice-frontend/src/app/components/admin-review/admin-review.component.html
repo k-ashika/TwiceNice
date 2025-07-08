@@ -1,0 +1,124 @@
+<div class="d-flex" style="min-height: 100vh;">
+  <!-- Sidebar from Admin Dashboard -->
+  <div class="sidebar p-0" style="width: 240px;">
+    <h4 class="text-center mb-0 py-4">TWICENICE</h4>
+    <ul class="nav flex-column mt-2 px-3">
+      <li class="nav-item">
+        <a routerLink="/admin-dashboard" class="nav-link">
+          <i class="fas fa-tachometer-alt me-2"></i> Dashboard
+        </a>
+      </li>
+      <li class="nav-item">
+        <a routerLink="/admin-products" class="nav-link">
+          <i class="fas fa-tshirt me-2"></i> Products
+        </a>
+      </li>
+      <li class="nav-item">
+        <a routerLink="/admin-orders" class="nav-link">
+          <i class="fas fa-shopping-bag me-2"></i> Orders
+        </a>
+      </li>
+      <li class="nav-item">
+        <a routerLink="/admin-users" class="nav-link">
+          <i class="fas fa-users me-2"></i> Users
+        </a>
+      </li>
+      <li class="nav-item">
+        <a routerLink="/admin-reviews" class="nav-link active">
+          <i class="fas fa-star me-2"></i> Reviews
+        </a>
+      </li>
+      <li class="nav-item">
+        <a routerLink="/admin-returns" class="nav-link">
+          <i class="fas fa-exchange-alt me-2"></i> Returns
+        </a>
+      </li>
+      <li class="nav-item">
+        <a routerLink="/admin-profile" class="nav-link">
+          <i class="fas fa-user-cog me-2"></i> Profile
+        </a>
+      </li>
+      <li class="nav-item mt-3">
+        <a (click)="logout()" class="nav-link text-danger">
+          <i class="fas fa-sign-out-alt me-2"></i> Logout
+        </a>
+      </li>
+    </ul>
+  </div>
+
+  <!-- Main Content Area -->
+  <div class="main-content flex-grow-1">
+    <div class="container-fluid py-4">
+      <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="mb-0" style="color: #198754;">Manage Product Reviews</h2>
+      </div>
+
+      <div class="card dashboard-card">
+        <div class="card-body p-0">
+          <!-- Loading state -->
+          <div *ngIf="isLoading" class="text-center py-4">
+            <div class="spinner-border text-primary" role="status">
+              <span class="visually-hidden">Loading...</span>
+            </div>
+          </div>
+
+          <!-- Error state -->
+          <div *ngIf="errorMessage && !isLoading" class="alert alert-danger">
+            {{ errorMessage }}
+          </div>
+
+          <!-- Reviews table -->
+          <div *ngIf="!isLoading && !errorMessage">
+            <div class="table-responsive">
+              <table class="table dashboard-table">
+                <thead>
+                  <tr>
+                    <th>ID</th>
+                    <th>User</th>
+                    <th>Product</th>
+                    <th>Image</th>
+                    <th>Rating</th>
+                    <th>Comment</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let review of reviews">
+                    <td>{{ review.id }}</td>
+                    <td>{{ review.userName || 'User ' + review.userId }}</td>
+                    <td>{{ review.product?.name || 'Product ' + review.productId }}</td>
+                    <td>
+                      <img [src]="getImageUrl(review.product?.imageUrl)" 
+                           class="img-thumbnail" width="50" height="50" 
+                           (error)="handleImageError($event)"
+                           alt="Product Image">
+                    </td>
+                    <td>
+                      <div class="star-rating">
+                        <span *ngFor="let star of [1,2,3,4,5]; let i = index">
+                          <i class="fas fa-star" [class.filled]="i < review.rating"></i>
+                        </span>
+                      </div>
+                      <span class="ms-2 badge bg-warning text-dark">
+                        {{ review.rating }}/5
+                      </span>
+                    </td>
+                    <td>{{ review.comment }}</td>
+                    <td>
+                      <button class="btn btn-success btn-sm" (click)="deleteReview(review.id!)">
+                        <i class="fas fa-trash"></i> Delete
+                      </button>
+                    </td>
+                  </tr>
+                  <tr *ngIf="reviews.length === 0">
+                    <td colspan="7" class="text-center py-4">No reviews found</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

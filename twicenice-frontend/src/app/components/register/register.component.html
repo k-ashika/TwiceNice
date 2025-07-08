@@ -1,0 +1,31 @@
+<div class="register-wrapper">
+  <div class="register-card">
+    <h2 class="register-title">Create your TwiceNice account</h2>
+    <form (ngSubmit)="register()">
+      <div class="form-group">
+        <input type="text" [(ngModel)]="user.name" name="name" placeholder="Full Name" required class="form-control" />
+      </div>
+      <div class="form-group">
+        <input type="email" [(ngModel)]="user.email" name="email" placeholder="Email" required class="form-control" />
+      </div>
+      <div class="form-group password-wrapper">
+  <input 
+    [type]="showPassword ? 'text' : 'password'" 
+    [(ngModel)]="user.password" 
+    name="password" 
+    placeholder="Password" 
+    required 
+    class="form-control" 
+  />
+  <button type="button" class="password-toggle" (click)="togglePassword()">
+    <i class="bi" [ngClass]="showPassword ? 'bi-eye-slash' : 'bi-eye'"></i>
+  </button>
+</div>
+
+      <div class="form-group">
+        <input type="text" [(ngModel)]="user.address" name="address" placeholder="Address" required class="form-control" />
+      </div>
+      <button type="submit" class="register-btn">Register</button>
+    </form>
+  </div>
+</div>

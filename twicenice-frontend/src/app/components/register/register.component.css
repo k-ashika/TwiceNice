@@ -1,0 +1,103 @@
+.register-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 85vh;
+  background: linear-gradient(to right, #e9f7ef, #f8f9fa);
+  padding: 2rem 1rem;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+.register-card {
+  background-color: white;
+  border-radius: 20px;
+  padding: 2.5rem;
+  max-width: 450px;
+  width: 100%;
+  box-shadow: 0 10px 30px rgba(25, 135, 84, 0.15);
+}
+
+.register-title {
+  text-align: center;
+  font-size: 1.8rem;
+  color: #198754;
+  margin-bottom: 2rem;
+  font-weight: 700;
+}
+
+.form-group {
+  margin-bottom: 1.2rem;
+}
+
+.form-control {
+  width: 100%;
+  padding: 12px 16px;
+  border: 1.5px solid #e9ecef;
+  border-radius: 10px;
+  font-size: 0.95rem;
+  transition: all 0.3s ease;
+  background-color: #fff;
+}
+
+.form-control:focus {
+  border-color: #198754;
+  box-shadow: 0 0 0 3px rgba(25, 135, 84, 0.15);
+  outline: none;
+}
+
+.register-btn {
+  width: 100%;
+  padding: 14px;
+  background-color: #198754;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  font-weight: 600;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  margin-top: 0.5rem;
+}
+
+.register-btn:hover {
+  background-color: #157347;
+}
+.password-wrapper {
+  position: relative;
+}
+
+.password-wrapper .form-control {
+  padding-right: 40px; /* Space for the icon */
+}
+
+.password-toggle {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: transparent;
+  border: none;
+  color: #adb5bd;
+  cursor: pointer;
+  font-size: 1.2rem;
+  padding: 4px;
+}
+
+.password-toggle:hover {
+  color: #198754;
+}
+:host {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background: linear-gradient(to right, #e9f7ef, #f8f9fa);
+}
+
+.register-wrapper {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 2rem 1rem;
+}
+
