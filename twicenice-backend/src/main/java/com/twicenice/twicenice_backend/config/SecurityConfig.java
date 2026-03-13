@@ -66,8 +66,9 @@ public class SecurityConfig {
                 // config.setAllowedOrigins(List.of("http://localhost:4200"));
                 config.setAllowedOrigins(List.of(
     "http://localhost:4200",
-    "https://your-netlify-site.netlify.app"
+    "https://twicenice-frontend.netlify.app"
 ));
+
 
                 config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
                 config.setAllowedHeaders(List.of("*"));
