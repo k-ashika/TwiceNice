@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule, NgForm } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { Router, RouterLink } from '@angular/router';
-
+import { environment } from '../../../environments/environment';
 @Component({
   selector: 'app-login',
   standalone: true,
@@ -25,7 +25,7 @@ export class LoginComponent {
   }
 
   loginUser() {
-    this.http.post<any>('http://localhost:8080/api/auth/login', this.credentials).subscribe(
+    this.http.post<any>(`${environment.apiUrl}/api/auth/login`, this.credentials)
       (response: any) => {
         localStorage.setItem('token', response.token);
         localStorage.setItem('role', response.role); 
