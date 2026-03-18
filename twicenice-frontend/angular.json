@@ -37,20 +37,26 @@
           },
           "configurations": {
             "production": {
-              "budgets": [
-  {
-    "type": "initial",
-    "maximumWarning": "5mb",
-    "maximumError": "10mb"
-  },
-  {
-    "type": "anyComponentStyle",
-    "maximumWarning": "10kb",
-    "maximumError": "20kb"
-  }
-],
-              "outputHashing": "all"
-            },
+  "fileReplacements": [
+    {
+      "replace": "src/environments/environment.ts",
+      "with": "src/environments/environment.prod.ts"
+    }
+  ],
+  "budgets": [
+    {
+      "type": "initial",
+      "maximumWarning": "5mb",
+      "maximumError": "10mb"
+    },
+    {
+      "type": "anyComponentStyle",
+      "maximumWarning": "10kb",
+      "maximumError": "20kb"
+    }
+  ],
+  "outputHashing": "all"
+},
             "development": {
               "optimization": false,
               "extractLicenses": false,
