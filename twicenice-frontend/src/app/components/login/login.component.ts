@@ -4,10 +4,11 @@ import { FormsModule, NgForm } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { Router, RouterLink } from '@angular/router';
 import { environment } from '../../../environments/environment';
+
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [CommonModule, FormsModule,RouterLink],
+  imports: [CommonModule, FormsModule, RouterLink],
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css']
 })
@@ -25,23 +26,22 @@ export class LoginComponent {
   }
 
   loginUser() {
-    this.http.post<any>(`${environment.apiUrl}/api/auth/login`, this.credentials)
-      (response: any) => {
-        localStorage.setItem('token', response.token);
-        localStorage.setItem('role', response.role); 
-        localStorage.setItem('email', response.email);
-        localStorage.setItem('userId', response.id);
+    this.http.post<any>(`${environment.apiUrl}/api/auth/login`, this.credentials).subscribe({
+      next: (res: any) => {
+        localStorage.setItem('token', res.token);
+        localStorage.setItem('role', res.role);
+        localStorage.setItem('email', res.email);
+        localStorage.setItem('userId', res.id);
 
-        // Redirect based on role
-        if (response.role === 'ROLE_ADMIN') {
+        if (res.role === 'ROLE_ADMIN') {
           this.router.navigate(['/admin-dashboard']);
         } else {
           this.router.navigate(['/']);
         }
       },
-      err => {
+      error: (err) => {
         alert('Login failed. Please check your credentials and try again.');
       }
-    );
+    });
   }
 }
