@@ -3,7 +3,7 @@ import { CrudmediatorService } from '../../services/crud.service.js';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
-
+import { environment } from '../../../environments/environment';
 declare var bootstrap: any;
 
 @Component({
@@ -25,7 +25,7 @@ export class AdminProductsComponent implements OnInit {
   };
   isEditMode = false;
   selectedFile: File | null = null;
-  baseImageUrl = 'http://localhost:8080/api/products/images/';
+  baseImageUrl = environment.apiUrl + '/api/products/images/';
   fallbackImage = 'assets/no-image.png'; // Local fallback image
 
   constructor(private service: CrudmediatorService, private router: Router) {}
