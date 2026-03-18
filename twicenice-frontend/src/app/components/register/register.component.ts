@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
-
+import { environment } from '../../../environments/environment';
 @Component({
   selector: 'app-register',
   standalone: true,
@@ -22,7 +22,7 @@ export class RegisterComponent {
   constructor(private http: HttpClient, private router: Router) {}
 
   register() {
-    this.http.post('http://localhost:8080/api/auth/register', this.user).subscribe({
+    this.http.post(`${environment.apiUrl}/api/auth/register`, this.user).subscribe({
       next: () => {
         alert('Registration successful!');
         this.router.navigate(['/login']);
