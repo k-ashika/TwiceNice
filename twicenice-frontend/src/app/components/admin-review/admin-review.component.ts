@@ -4,7 +4,7 @@ import { Review } from '../../models/review.model';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { Router, RouterModule } from '@angular/router';
-
+import { environment } from '../../../environments/environment';
 @Component({
   selector: 'app-admin-review',
   standalone: true,
@@ -16,7 +16,7 @@ export class AdminReviewComponent implements OnInit {
   reviews: Review[] = [];
   isLoading = true;
   errorMessage = '';
-  baseImageUrl = 'http://localhost:8080/api/products/images/';
+  baseImageUrl = environment.apiUrl + '/api/products/images/';
 
   constructor(private reviewService: ReviewService, private router: Router) {}
 
