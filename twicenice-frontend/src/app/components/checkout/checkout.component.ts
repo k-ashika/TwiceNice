@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { CartService } from '../../services/cart.service';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
-
+import { environment } from '../../../environments/environment';
 @Component({
   selector: 'app-checkout',
   standalone: true,
@@ -68,7 +68,7 @@ export class CheckoutComponent implements OnInit {
   // }
   payNow() {
   this.http
-    .post<any>(`http://localhost:8080/api/payment/create-order?amount=${this.totalAmount}`, {})
+    this.http.post<any>(`${environment.apiUrl}/api/payment/create-order?amount=${this.totalAmount}`, {})
     .subscribe(
       (res) => {
         const options = {
