@@ -3,7 +3,7 @@ import { CrudmediatorService } from '../../services/crud.service';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { Router, RouterModule } from '@angular/router';
-
+import { environment } from '../../../environments/environment';
 declare var bootstrap: any;
 
 @Component({
@@ -17,7 +17,7 @@ export class AdminOrdersComponent implements OnInit {
   orders: any[] = [];
   selectedOrder: any = null;
   newStatus: string = '';
-  baseImageUrl = 'http://localhost:8080/api/products/images'; // Added
+  baseImageUrl = environment.apiUrl + '/api/products/images';
 
   constructor(private service: CrudmediatorService, private router: Router) {}
 
