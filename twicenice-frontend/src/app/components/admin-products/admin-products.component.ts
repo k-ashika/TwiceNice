@@ -25,7 +25,7 @@ export class AdminProductsComponent implements OnInit {
   };
   isEditMode = false;
   selectedFile: File | null = null;
-  baseImageUrl = environment.apiUrl + '/api/products/images/';
+  // baseImageUrl = environment.apiUrl + '/api/products/images/';
   fallbackImage = 'assets/no-image.png'; // Local fallback image
 
   constructor(private service: CrudmediatorService, private router: Router) {}
