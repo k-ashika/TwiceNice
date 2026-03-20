@@ -27,9 +27,13 @@ export class CrudmediatorService {
   }
 
   getAdminProducts(): Observable<Product[]> {
-    return this.http.get<Product[]>(`${this.apiUrl}/admin/products`);
-  }
-
+  return this.http.get<Product[]>(`${this.apiUrl}/admin/products`).pipe(
+    map(products => products.map(p => ({
+      ...p,
+      imageUrl: this.constructImageUrl(p.imageUrl)
+    })))
+  );
+}
   addProduct(productForm: FormData): Observable<Product> {
     return this.http.post<Product>(`${this.apiUrl}/admin/products/add`, productForm);
   }
