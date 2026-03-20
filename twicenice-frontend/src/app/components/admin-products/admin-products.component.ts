@@ -48,13 +48,9 @@ export class AdminProductsComponent implements OnInit {
   }
 
   getImageUrl(imagePath: string): string {
-    if (!imagePath) return this.fallbackImage;
-    if (imagePath.startsWith('http') || imagePath.startsWith('data:')) {
-      return imagePath;
-    }
-    return this.baseImageUrl + imagePath;
-  }
-
+  if (!imagePath) return this.fallbackImage;
+  return imagePath;
+}
   handleImageError(event: any) {
     event.target.src = this.fallbackImage;
   }
