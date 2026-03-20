@@ -40,11 +40,10 @@ export class AdminReviewComponent implements OnInit {
     });
   }
 
-  getImageUrl(imagePath: string | undefined): string {
-    if (!imagePath) return 'https://via.placeholder.com/60';
-    if (imagePath.startsWith('http')) return imagePath;
-    return this.baseImageUrl + imagePath;
-  }
+ getImageUrl(imagePath: string | undefined): string {
+  if (!imagePath) return 'https://via.placeholder.com/60';
+  return imagePath;
+}
 
   handleImageError(event: any) {
     event.target.src = 'https://via.placeholder.com/60';
