@@ -33,16 +33,9 @@ export class AdminOrdersComponent implements OnInit {
   }
 
    getImageUrl(imagePath: string | undefined): string {
-    if (!imagePath) return 'https://placehold.co/60x60?text=No+Image';
-    
-    // Handle absolute URLs
-    if (imagePath.startsWith('http')) return imagePath;
-    
-    // Extract just the filename from any path structure
-    const filename = imagePath.split('/').pop() || imagePath;
-    
-    return `${this.baseImageUrl}/${filename}`;
-  }
+  if (!imagePath) return 'https://placehold.co/60x60?text=No+Image';
+  return imagePath;
+}
 
   handleImageError(event: any) {
     event.target.src = 'https://placehold.co/60x60?text=Image+Error';
