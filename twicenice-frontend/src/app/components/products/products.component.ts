@@ -21,12 +21,6 @@ export class ProductsComponent implements OnInit {
   isLoading = true;
   error: string | null = null;
 
-  getImageUrl(imageUrl: string): string {
-  if (!imageUrl) return 'assets/placeholder.jpg';
-  if (imageUrl.startsWith('http')) return imageUrl;
-  return 'assets/placeholder.jpg';
-}
-
   constructor(
     private productService: CrudmediatorService,
     private cartService: CartService,
@@ -42,7 +36,7 @@ export class ProductsComponent implements OnInit {
       this.isLoading = true;
       this.error = null;
 
-      const productObservable = this.selectedCategory 
+      const productObservable = this.selectedCategory
         ? this.productService.getProductsByCategory(this.selectedCategory)
         : this.productService.getAllProducts();
 
@@ -60,8 +54,10 @@ export class ProductsComponent implements OnInit {
     });
   }
 
-  getImageUrl(imageFileName: string): string {
-    return this.imageBaseUrl + imageFileName;
+  getImageUrl(imageUrl: string): string {
+    if (!imageUrl) return 'assets/placeholder.jpg';
+    if (imageUrl.startsWith('http')) return imageUrl;
+    return 'assets/placeholder.jpg';
   }
 
   handleImageError(event: Event) {
@@ -79,13 +75,12 @@ export class ProductsComponent implements OnInit {
     };
 
     this.cartService.addToCart(cartItem).subscribe({
-  next: () => {
-    alert('Product added to cart!');
-    this.cartService.updateCartCount(userId); 
-  },
-  error: (err: any) => console.error('Error adding to cart:', err)
-});
-
+      next: () => {
+        alert('Product added to cart!');
+        this.cartService.updateCartCount(userId);
+      },
+      error: (err: any) => console.error('Error adding to cart:', err)
+    });
   }
 
   loadWishlistStatus() {
@@ -110,7 +105,7 @@ export class ProductsComponent implements OnInit {
       this.wishlistService.removeFromWishlist(product.id).subscribe({
         next: () => {
           this.wishlistProductIds = this.wishlistProductIds.filter(id => id !== product.id);
-           this.wishlistService.updateWishlistCount();
+          this.wishlistService.updateWishlistCount();
         },
         error: (err: any) => console.error('Error removing from wishlist:', err)
       });
@@ -118,7 +113,7 @@ export class ProductsComponent implements OnInit {
       this.wishlistService.addToWishlist(product.id).subscribe({
         next: () => {
           this.wishlistProductIds = [...this.wishlistProductIds, product.id!];
-           this.wishlistService.updateWishlistCount();
+          this.wishlistService.updateWishlistCount();
         },
         error: (err: any) => console.error('Error adding to wishlist:', err)
       });
