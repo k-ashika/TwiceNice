@@ -21,7 +21,11 @@ export class ProductsComponent implements OnInit {
   isLoading = true;
   error: string | null = null;
 
-  readonly imageBaseUrl = 'http://localhost:8080/api/products/images/';
+  getImageUrl(imageUrl: string): string {
+  if (!imageUrl) return 'assets/placeholder.jpg';
+  if (imageUrl.startsWith('http')) return imageUrl;
+  return 'assets/placeholder.jpg';
+}
 
   constructor(
     private productService: CrudmediatorService,
