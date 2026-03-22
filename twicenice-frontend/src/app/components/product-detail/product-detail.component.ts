@@ -99,7 +99,7 @@ export class ProductDetailComponent implements OnInit {
     const userId = Number(localStorage.getItem('userId'));
     this.service.addToCart(this.product.id!).subscribe(() => {
       alert('Product added to cart!');
-      this.cartService.updateCartCount(userId); 
+      this.cartService.updateCartCount(userId);
     });
   }
 
@@ -124,15 +124,15 @@ export class ProductDetailComponent implements OnInit {
       this.wishlistService.removeFromWishlist(this.product.id!).subscribe({
         next: () => {
           this.isInWishlist = false;
-          this.wishlistService.updateWishlistCount(); 
+          this.wishlistService.updateWishlistCount();
         },
         error: (err) => console.error('Error removing from wishlist:', err)
       });
-    } } else {
+    } else {
       this.wishlistService.addToWishlist(this.product.id!).subscribe({
         next: () => {
           this.isInWishlist = true;
-          this.wishlistService.updateWishlistCount(); 
+          this.wishlistService.updateWishlistCount();
         },
         error: (err) => console.error('Error adding to wishlist:', err)
       });
