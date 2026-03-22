@@ -66,9 +66,10 @@ export class OrdersComponent implements OnInit {
 }
   
 
- getImageUrl(imageFileName: string | null): string {
-    if (!imageFileName) return 'https:/placehold.co/60x60';
-    return `http://localhost:8080/images/${imageFileName}`;
+ getImageUrl(imageUrl: string): string {
+    if (!imageUrl) return 'assets/placeholder.jpg';
+    if (imageUrl.startsWith('http')) return imageUrl;
+    return 'assets/placeholder.jpg';
   }
   handleImageError(event: Event) {
   const img = event.target as HTMLImageElement;
