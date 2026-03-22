@@ -128,7 +128,7 @@ export class ProductDetailComponent implements OnInit {
         },
         error: (err) => console.error('Error removing from wishlist:', err)
       });
-    } else {
+    } } else {
       this.wishlistService.addToWishlist(this.product.id!).subscribe({
         next: () => {
           this.isInWishlist = true;
@@ -137,5 +137,11 @@ export class ProductDetailComponent implements OnInit {
         error: (err) => console.error('Error adding to wishlist:', err)
       });
     }
+  }
+
+  handleImageError(event: Event) {
+    const img = event.target as HTMLImageElement;
+    img.src = 'assets/placeholder.jpg';
+    img.onerror = null;
   }
 }
