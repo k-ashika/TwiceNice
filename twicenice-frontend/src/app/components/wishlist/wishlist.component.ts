@@ -40,11 +40,10 @@ userId: number = Number(localStorage.getItem('userId'));
   }
 
   private fixImageUrl(url: string): string {
-    if (!url) return '/assets/placeholder.jpg';
-    if (url.startsWith('http')) return url;
-    const cleanPath = url.replace(/^[\\/]+|[\\/]+$/g, '');
-    return `/api/products/images/${cleanPath}`;
-  }
+  if (!url) return '/assets/placeholder.jpg';
+  if (url.startsWith('http')) return url;
+  return '/assets/placeholder.jpg';
+}
 
   handleImageError(event: Event): void {
     const img = event.target as HTMLImageElement;
