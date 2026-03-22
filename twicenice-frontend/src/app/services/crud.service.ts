@@ -18,19 +18,19 @@ export class CrudmediatorService {
   constructor(private http: HttpClient) {}
 
   getAllProducts(): Observable<Product[]> {
-    return this.http.get<Product[]>(`${this.apiUrl}/products`).pipe(
-      map(products => products.map(p => ({
-        ...p,
-        imageUrl: this.constructImageUrl(p.imageUrl)
-      })))
-    );
-  }
+  return this.http.get<Product[]>(`${this.apiUrl}/products`).pipe(
+    map(products => products.map((p: any) => ({
+      ...p,
+      imageUrl: p.imageUrl || p.image_url || 'assets/placeholder.jpg'
+    })))
+  );
+}
 
   getAdminProducts(): Observable<Product[]> {
   return this.http.get<Product[]>(`${this.apiUrl}/admin/products`).pipe(
-    map(products => products.map(p => ({
+    map(products => products.map((p: any) => ({
       ...p,
-      imageUrl: this.constructImageUrl(p.imageUrl)
+      imageUrl: p.imageUrl || p.image_url || 'assets/placeholder.jpg'
     })))
   );
 }
@@ -75,26 +75,24 @@ export class CrudmediatorService {
   }
 
   getUserProducts(): Observable<Product[]> {
-    return this.http.get<Product[]>(`${this.apiUrl}/products`).pipe(
-      map(products => products.map(p => ({
-        ...p,
-        imageUrl: this.constructImageUrl(p.imageUrl)
-      }))),
-      catchError(error => {
-        console.error('Error loading products:', error);
-        return throwError(() => error);
-      })
-    );
-  }
+  return this.http.get<Product[]>(`${this.apiUrl}/products`).pipe(
+    map(products => products.map((p: any) => ({
+      ...p,
+      imageUrl: p.imageUrl || p.image_url || 'assets/placeholder.jpg'
+    }))),
+    catchError(error => {
+      console.error('Error loading products:', error);
+      return throwError(() => error);
+    })
+  );
+}
 
   private constructImageUrl(filename: string): string {
-    if (!filename) return 'assets/placeholder.jpg';
-    if (filename.startsWith('http://') || filename.startsWith('https://')) return filename;
-
-    const cleanFilename = filename.split(/[\\/]/).pop() || filename;
-
-    return `${this.apiUrl}/products/images/${cleanFilename}`;
-  }
+  if (!filename) return 'assets/placeholder.jpg';
+  if (filename.startsWith('http://') || filename.startsWith('https://')) return filename;
+  const cleanFilename = filename.split(/[\\/]/).pop() || filename;
+  return `${this.apiUrl}/products/images/${cleanFilename}`;
+}
 
   getProductsByCategory(category: string): Observable<Product[]> {
     return this.http.get<Product[]>(`${this.apiUrl}/category/${category}`);
