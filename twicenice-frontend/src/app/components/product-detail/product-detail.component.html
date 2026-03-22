@@ -7,9 +7,9 @@
     <div class="col-lg-6">
       <div class="image-gallery">
         <div class="main-image">
-          <img [src]="'http://localhost:8080/api/products/images/' + product.imageUrl" 
-               class="img-fluid" 
-               alt="{{product.name}}">
+          <img [src]="product.imageUrl || 'assets/placeholder.jpg'"
+     (error)="handleImageError($event)"
+     alt="{{ product?.name }}">
           <div class="image-badges">
             <span class="badge stock-badge" [ngClass]="{'in-stock': product.stock > 0, 'out-of-stock': product.stock === 0}">
               {{product.stock > 0 ? 'In Stock' : 'Out of Stock'}}
