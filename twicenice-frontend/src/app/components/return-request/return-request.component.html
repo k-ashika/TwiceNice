@@ -75,7 +75,7 @@
                  (click)="handleItemClick(item, $event)">
               <div class="item-image-container">
                 <div class="position-relative">
-                  <img [src]="'https://your-backend-url.onrender.com/api/products/images/' + item.imageUrl"
+                  <img [src]="getImageUrl(item.imageUrl)"
 
                     (error)="handleImageError($event)"
                     [alt]="item.productName"
