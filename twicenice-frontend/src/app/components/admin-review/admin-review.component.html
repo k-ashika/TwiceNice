@@ -88,10 +88,7 @@
                     <td>{{ review.userName || 'User ' + review.userId }}</td>
                     <td>{{ review.product?.name || 'Product ' + review.productId }}</td>
                     <td>
-                      <img [src]="getImageUrl(review.product?.imageUrl)" 
-                           class="img-thumbnail" width="50" height="50" 
-                           (error)="handleImageError($event)"
-                           alt="Product Image">
+                      <img [src]="getImageUrl(item.imageUrl)"
                     </td>
                     <td>
                       <div class="star-rating">
