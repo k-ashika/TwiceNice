@@ -88,20 +88,11 @@ export class CrudmediatorService {
 }
 
   private constructImageUrl(filename: string): string {
-  if (!filename) return 'https://via.placeholder.com/60';
-
-  // if already full URL
-  if (filename.startsWith('http')) return filename;
-
-  // remove path if exists
-  const cleanFilename = filename.split(/[\\/]/).pop();
-
-  return `${this.baseUrl}/api/products/images/${cleanFilename}`;
+  if (!filename) return 'assets/placeholder.jpg';
+  if (filename.startsWith('http://') || filename.startsWith('https://')) return filename;
+  const cleanFilename = filename.split(/[\\/]/).pop() || filename;
+  return `${this.apiUrl}/products/images/${cleanFilename}`;
 }
-  getProductsByCategory(category: string): Observable<Product[]> {
-    return this.http.get<Product[]>(`${this.apiUrl}/category/${category}`);
-  }
-
   getUserOrders(userId: number): Observable<any[]> {
     return this.http.get<any[]>(`${this.apiUrl}/user/orders/${userId}`);
   }
