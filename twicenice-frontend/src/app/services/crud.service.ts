@@ -98,11 +98,13 @@ getProductsByCategory(category: string): Observable<Product[]> {
   );
 }
 
-  public constructImageUrl(filename: string): string {
+ public constructImageUrl(filename: string): string {
   if (!filename) return 'assets/placeholder.jpg';
-  if (filename.startsWith('http://') || filename.startsWith('https://')) return filename;
+  if (filename.startsWith('http://') || filename.startsWith('https://')) {
+    return filename;
+  }
   const cleanFilename = filename.split(/[\\/]/).pop() || filename;
-  return `${this.apiUrl}/products/images/${cleanFilename}`;
+  return `${this.baseUrl}/api/products/images/${cleanFilename}`;
 }
   getUserOrders(userId: number): Observable<any[]> {
     return this.http.get<any[]>(`${this.apiUrl}/user/orders/${userId}`);
