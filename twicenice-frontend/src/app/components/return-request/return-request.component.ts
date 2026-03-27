@@ -112,8 +112,7 @@ export class ReturnRequestComponent implements OnInit {
   }
 getImageUrl(imageUrl?: string): string {
   if (!imageUrl) return this.fallbackImage;
-  if (imageUrl.startsWith('http://') || imageUrl.startsWith('https://')) return imageUrl;
-  return this.fallbackImage;
+  return this.crudService.constructImageUrl(imageUrl);
 }
   handleItemClick(item: OrderItem, event: MouseEvent) {
     if ((event.target as HTMLElement).closest('.reason-dropdown')) return;
