@@ -110,7 +110,11 @@ export class ReturnRequestComponent implements OnInit {
       this.returnReasons[item.id] = ''; // Clear reason when unselected
     }
   }
-
+getImageUrl(imageUrl?: string): string {
+  if (!imageUrl) return this.fallbackImage;
+  if (imageUrl.startsWith('http://') || imageUrl.startsWith('https://')) return imageUrl;
+  return this.fallbackImage;
+}
   handleItemClick(item: OrderItem, event: MouseEvent) {
     if ((event.target as HTMLElement).closest('.reason-dropdown')) return;
     this.toggleItemSelection(item);
