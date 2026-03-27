@@ -100,9 +100,9 @@ getProductsByCategory(category: string): Observable<Product[]> {
 
  public constructImageUrl(filename: string): string {
   if (!filename) return 'assets/placeholder.jpg';
-  if (filename.startsWith('http://') || filename.startsWith('https://')) {
-    return filename;
-  }
+  if (filename.includes('://')) return filename;
+  
+  // Plain filename only — build full backend URL
   const cleanFilename = filename.split(/[\\/]/).pop() || filename;
   return `${this.baseUrl}/api/products/images/${cleanFilename}`;
 }
