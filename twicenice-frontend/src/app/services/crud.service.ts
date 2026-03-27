@@ -98,7 +98,7 @@ getProductsByCategory(category: string): Observable<Product[]> {
   );
 }
 
-  private constructImageUrl(filename: string): string {
+  public constructImageUrl(filename: string): string {
   if (!filename) return 'assets/placeholder.jpg';
   if (filename.startsWith('http://') || filename.startsWith('https://')) return filename;
   const cleanFilename = filename.split(/[\\/]/).pop() || filename;
