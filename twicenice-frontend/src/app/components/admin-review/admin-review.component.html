@@ -83,8 +83,11 @@
                     <td>{{ review.userName || 'User ' + review.userId }}</td>
                     <td>{{ review.product?.name || 'Product ' + review.productId }}</td>
                     <td>
-                      <img [src]="review.product?.imageUrl || 'assets/placeholder.jpg'" alt="Product image" style="width:60px; height:60px; object-fit:cover;" />
-                    </td>
+  <img [src]="getImageUrl(review.product?.imageUrl)"
+       (error)="handleImageError($event)"
+       alt="Product image"
+       style="width:60px; height:60px; object-fit:cover;" />
+</td>
                     <td>
                       <div class="star-rating">
                         <span *ngFor="let star of [1,2,3,4,5]; let i = index">
