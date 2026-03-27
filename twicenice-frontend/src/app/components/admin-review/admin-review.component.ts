@@ -1,10 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { ReviewService } from '../../services/review.service';
+import { CrudmediatorService } from '../../services/crud.service';
 import { Review } from '../../models/review.model';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { Router, RouterModule } from '@angular/router';
 import { environment } from '../../../environments/environment';
+
 @Component({
   selector: 'app-admin-review',
   standalone: true,
@@ -18,7 +20,11 @@ export class AdminReviewComponent implements OnInit {
   errorMessage = '';
   baseImageUrl = environment.apiUrl + '/api/products/images/';
 
-  constructor(private reviewService: ReviewService, private router: Router) {}
+  constructor(
+    private reviewService: ReviewService,
+    private crudService: CrudmediatorService,
+    private router: Router
+  ) {}
 
   ngOnInit(): void {
     this.loadReviews();
@@ -40,13 +46,13 @@ export class AdminReviewComponent implements OnInit {
     });
   }
 
- getImageUrl(imagePath: string | undefined): string {
-  if (!imagePath) return 'https://via.placeholder.com/60';
-  return imagePath;
-}
+  getImageUrl(imagePath: string | undefined): string {
+    if (!imagePath) return 'assets/placeholder.jpg';
+    return this.crudService.constructImageUrl(imagePath);
+  }
 
   handleImageError(event: any) {
-    event.target.src = 'https://via.placeholder.com/60';
+    event.target.src = 'assets/placeholder.jpg';
   }
 
   deleteReview(id: number) {
