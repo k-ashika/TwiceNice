@@ -1,5 +1,4 @@
 <div class="d-flex" style="min-height: 100vh;">
-  <!-- Sidebar from Admin Dashboard -->
   <div class="sidebar p-0" style="width: 240px;">
     <h4 class="text-center mb-0 py-4">TWICENICE</h4>
     <ul class="nav flex-column mt-2 px-3">
@@ -46,7 +45,6 @@
     </ul>
   </div>
 
-  <!-- Main Content Area -->
   <div class="main-content flex-grow-1">
     <div class="container-fluid py-4">
       <div class="d-flex justify-content-between align-items-center mb-4">
@@ -55,19 +53,16 @@
 
       <div class="card dashboard-card">
         <div class="card-body p-0">
-          <!-- Loading state -->
           <div *ngIf="isLoading" class="text-center py-4">
             <div class="spinner-border text-primary" role="status">
               <span class="visually-hidden">Loading...</span>
             </div>
           </div>
 
-          <!-- Error state -->
           <div *ngIf="errorMessage && !isLoading" class="alert alert-danger">
             {{ errorMessage }}
           </div>
 
-          <!-- Reviews table -->
           <div *ngIf="!isLoading && !errorMessage">
             <div class="table-responsive">
               <table class="table dashboard-table">
@@ -88,10 +83,7 @@
                     <td>{{ review.userName || 'User ' + review.userId }}</td>
                     <td>{{ review.product?.name || 'Product ' + review.productId }}</td>
                     <td>
-                     
-<td>
-  <img [src]="review.product?.imageUrl || 'assets/placeholder.jpg'" alt="Product image" style="width:60px; height:60px; object-fit:cover;" />
-</td>
+                      <img [src]="review.product?.imageUrl || 'assets/placeholder.jpg'" alt="Product image" style="width:60px; height:60px; object-fit:cover;" />
                     </td>
                     <td>
                       <div class="star-rating">
