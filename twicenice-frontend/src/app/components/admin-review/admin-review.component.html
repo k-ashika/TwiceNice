@@ -88,7 +88,8 @@
                     <td>{{ review.userName || 'User ' + review.userId }}</td>
                     <td>{{ review.product?.name || 'Product ' + review.productId }}</td>
                     <td>
-                      <img [src]="getImageUrl(item.imageUrl)"
+                     
+<img [src]="getImageUrl(item.imageUrl)" alt="Item image" />
                     </td>
                     <td>
                       <div class="star-rating">
