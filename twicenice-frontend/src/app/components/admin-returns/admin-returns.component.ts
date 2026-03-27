@@ -53,10 +53,15 @@ export class AdminReturnsComponent implements OnInit {
       }
     });
   }
-
+getImageUrl(imageUrl?: string): string {
+  if (!imageUrl) return 'assets/placeholder.jpg';
+  if (imageUrl.includes('://')) return imageUrl;
+  return this.crudService.constructImageUrl(imageUrl);
+}
   handleImageError(event: any) {
-    event.target.src = 'https://via.placeholder.com/60?text=Product';
-  }
+  event.target.src = 'assets/placeholder.jpg';
+  event.target.onerror = null; // prevent infinite loop
+}
 
   processReturn(returnId: number) {
     const returnReq = this.returns.find(r => r.id === returnId);
