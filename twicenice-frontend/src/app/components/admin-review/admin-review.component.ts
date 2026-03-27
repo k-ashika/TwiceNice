@@ -47,9 +47,10 @@ export class AdminReviewComponent implements OnInit {
   }
 
   getImageUrl(imagePath: string | undefined): string {
-    if (!imagePath) return 'assets/placeholder.jpg';
-    return this.crudService.constructImageUrl(imagePath);
-  }
+  if (!imagePath) return 'assets/placeholder.jpg';
+  if (imagePath.includes('://')) return imagePath; 
+  return this.crudService.constructImageUrl(imagePath);
+}
 
   handleImageError(event: any) {
     event.target.src = 'assets/placeholder.jpg';
