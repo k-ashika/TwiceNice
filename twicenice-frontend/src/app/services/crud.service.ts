@@ -49,7 +49,18 @@ export class CrudmediatorService {
   getAllUsers(): Observable<any> {
     return this.http.get(`${this.apiUrl}/admin/users`);
   }
-
+getProductsByCategory(category: string): Observable<Product[]> {
+  return this.http.get<Product[]>(`${this.apiUrl}/products?category=${encodeURIComponent(category)}`).pipe(
+    map(products => products.map((p: any) => ({
+      ...p,
+      imageUrl: p.imageUrl || p.image_url || 'assets/placeholder.jpg'
+    }))),
+    catchError(error => {
+      console.error('Error loading products by category:', error);
+      return throwError(() => error);
+    })
+  );
+}
   deleteUser(id: number): Observable<any> {
     return this.http.delete(`${this.apiUrl}/admin/users/${id}`);
   }
