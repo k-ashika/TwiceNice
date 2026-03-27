@@ -88,14 +88,13 @@
                   <tr *ngFor="let return of returns">
                     <td>{{return.id}}</td>
                     <td>
-                      <img *ngIf="return.productImageUrl" 
-                           [src]="return.productImageUrl" 
-                           class="img-thumbnail" 
-                           width="50" 
-                           height="50"
-                           (error)="handleImageError($event)"
-                           alt="Product Image">
-                    </td>
+  <img [src]="getImageUrl(return.productImageUrl)"
+       class="img-thumbnail"
+       width="50"
+       height="50"
+       (error)="handleImageError($event)"
+       alt="Product Image">
+</td>
                     <td>#{{return.orderId}}</td>
                     <td>User {{return.userId}}</td>
                     <td>{{return.reason}}</td>
