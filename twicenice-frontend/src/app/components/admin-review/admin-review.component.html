@@ -89,7 +89,9 @@
                     <td>{{ review.product?.name || 'Product ' + review.productId }}</td>
                     <td>
                      
-<img [src]="getImageUrl(item.imageUrl)" alt="Item image" />
+<td>
+  <img [src]="review.product?.imageUrl || 'assets/placeholder.jpg'" alt="Product image" style="width:60px; height:60px; object-fit:cover;" />
+</td>
                     </td>
                     <td>
                       <div class="star-rating">
