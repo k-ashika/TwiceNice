@@ -4,6 +4,7 @@ import { CartService } from '../../services/cart.service';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { environment } from '../../../environments/environment';
+
 @Component({
   selector: 'app-checkout',
   standalone: true,
@@ -14,10 +15,8 @@ import { environment } from '../../../environments/environment';
 export class CheckoutComponent implements OnInit {
   cartItems: any[] = [];
   totalAmount: number = 0;
-  userId: number = Number(localStorage.getItem('userId')); // ← fix hardcoded 1
+  userId: number = Number(localStorage.getItem('userId'));
 
-  
-}
   constructor(
     private cartService: CartService,
     private http: HttpClient,
@@ -28,99 +27,60 @@ export class CheckoutComponent implements OnInit {
     this.cartService.getCartByUserId(this.userId).subscribe(items => {
       this.cartItems = items;
       this.totalAmount = this.cartItems.reduce(
-        (sum, item) => sum + item.quantity * 100, 
+        (sum, item) => sum + item.quantity * 100,
         0
       );
     });
   }
 
-  // payNow() {
-  //   this.http
-  //     .post<any>(`http://localhost:8080/api/payment/create-order?amount=${this.totalAmount}`, {})
-  //     .subscribe(
-  //       (res) => {
-  //         const options = {
-  //           key: 'rzp_test_YourKeyID', 
-  //           amount: res.amount,
-  //           currency: res.currency,
-  //           name: 'TwiceNice Thrift',
-  //           description: 'Fashion Payment',
-  //           order_id: res.id,
-  //           handler: (response: any) => {
-  //             alert('Payment Successful! Payment ID: ' + response.razorpay_payment_id);
-  //             this.router.navigate(['/orders']);
-  //           },
-  //           prefill: {
-  //             name: 'Test User',
-  //             email: 'test@example.com',
-  //             contact: '9999999999'
-  //           },
-  //           theme: {
-  //             color: '#00a86b'
-  //           }
-  //         };
-
-  //         const rzp = new (window as any).Razorpay(options);
-  //         rzp.open();
-  //       },
-  //       (err) => {
-  //         alert('Error creating order');
-  //         console.error(err);
-  //       }
-  //     );
-  // }
   payNow() {
-  this.http
     this.http.post<any>(`${environment.apiUrl}/api/payment/create-order?amount=${this.totalAmount}`, {})
-    .subscribe(
-      (res) => {
-        const options = {
-          key: 'rzp_test_YourKeyID',
-          amount: res.amount,
-          currency: res.currency,
-          name: 'TwiceNice Thrift',
-          description: 'Fashion Payment',
-          order_id: res.id,
-          handler: (response: any) => {
-            // ✅ Razorpay payment was successful
-            alert('Payment Successful! Payment ID: ' + response.razorpay_payment_id);
-
-            this.cartService.placeOrder(this.userId).subscribe({
-              next: () => {
-                alert('Order placed successfully!');
-                this.router.navigate(['/orders']);
-              },
-              error: (orderError) => {
-                alert('Payment succeeded, but order placement failed.');
-                console.error('Order placement error:', orderError);
+      .subscribe(
+        (res) => {
+          const options = {
+            key: 'rzp_test_YourKeyID',
+            amount: res.amount,
+            currency: res.currency,
+            name: 'TwiceNice Thrift',
+            description: 'Fashion Payment',
+            order_id: res.id,
+            handler: (response: any) => {
+              alert('Payment Successful! Payment ID: ' + response.razorpay_payment_id);
+              this.cartService.placeOrder(this.userId).subscribe({
+                next: () => {
+                  this.cartService.resetCartCount();
+                  this.cartItems = [];
+                  alert('Order placed successfully!');
+                  this.router.navigate(['/orders']);
+                },
+                error: (orderError) => {
+                  alert('Payment succeeded, but order placement failed.');
+                  console.error('Order placement error:', orderError);
+                }
+              });
+            },
+            modal: {
+              ondismiss: () => {
+                alert('Payment popup closed. Your order was not placed.');
               }
-            });
-          },
-          modal: {
-            // ✅ Runs when user closes Razorpay window (without paying)
-            ondismiss: () => {
-              alert('Payment popup closed. Your order was not placed.');
+            },
+            prefill: {
+              name: 'Test User',
+              email: 'test@example.com',
+              contact: '9999999999'
+            },
+            theme: {
+              color: '#00a86b'
             }
-          },
-          prefill: {
-            name: 'Test User',
-            email: 'test@example.com',
-            contact: '9999999999'
-          },
-          theme: {
-            color: '#00a86b'
-          }
-        };
+          };
 
-        const rzp = new (window as any).Razorpay(options);
-        rzp.open();
-      },
-      (err) => {
-        alert('Error creating Razorpay order');
-        console.error(err);
-      }
-    );
-}
-
-
+          const rzp = new (window as any).Razorpay(options);
+          rzp.open();
+        },
+        (err) => {
+          alert('Error creating Razorpay order');
+          console.error(err);
+        }
+      );
+  }
 }
