@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, RouterModule } from '@angular/router';
+import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { CrudmediatorService } from '../../services/crud.service';
 import { Product } from '../../models/product.model';
@@ -37,7 +37,8 @@ export class ProductDetailComponent implements OnInit {
     private service: CrudmediatorService,
     private reviewService: ReviewService,
     private wishlistService: WishlistService,
-    private cartService: CartService
+    private cartService: CartService,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
@@ -96,10 +97,22 @@ export class ProductDetailComponent implements OnInit {
   }
 
   addToCart(): void {
+    const token = localStorage.getItem('token');
+    if (!token) {
+      alert('Please login to add items to cart!');
+      this.router.navigate(['/login'], {
+        queryParams: { returnUrl: `/product/${this.product.id}` }
+      });
+      return;
+    }
+
     const userId = Number(localStorage.getItem('userId'));
-    this.service.addToCart(this.product.id!).subscribe(() => {
-      alert('Product added to cart!');
-      this.cartService.updateCartCount(userId);
+    this.service.addToCart(this.product.id!).subscribe({
+      next: () => {
+        alert('Product added to cart!');
+        this.cartService.updateCartCount(userId);
+      },
+      error: (err) => console.error('Error adding to cart:', err)
     });
   }
 
@@ -117,6 +130,9 @@ export class ProductDetailComponent implements OnInit {
   toggleWishlist(): void {
     if (!this.isLoggedIn) {
       alert('Please login to use the wishlist');
+      this.router.navigate(['/login'], {
+        queryParams: { returnUrl: `/product/${this.product.id}` }
+      });
       return;
     }
 
