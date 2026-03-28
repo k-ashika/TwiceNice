@@ -101,17 +101,17 @@ getProductsByCategory(category: string): Observable<Product[]> {
 public constructImageUrl(filename: string): string {
   if (!filename) return 'assets/placeholder.jpg';
   
-  // If it's already a full URL (starts with http or https), return it as is
+  // If it's already a full URL, return it
   if (filename.startsWith('http://') || filename.startsWith('https://')) {
     return filename;
   }
   
-  // If it contains :// (like cloudinary URL), return it as is
+  // If it contains ://, return it
   if (filename.includes('://')) {
     return filename;
   }
   
-  // Only process if it's a plain filename (no http, no ://)
+  // Only process plain filenames
   const cleanFilename = filename.split(/[\\/]/).pop() || filename;
   return `${this.apiUrl}/products/images/${cleanFilename}`;
 }
