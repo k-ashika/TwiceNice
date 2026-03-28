@@ -36,22 +36,32 @@
   background-color: #00a86b;
 }
 
-mat-nav-list {
+/* Nav links styling */
+.footer-section ul {
+  list-style: none;
   padding: 0;
+  margin: 0;
 }
 
-mat-nav-list a {
-  color: #ccc !important;
+.footer-section ul li {
+  margin-bottom: 0.5rem;
+}
+
+.footer-section ul li a {
+  color: #ccc;
+  text-decoration: none;
   transition: all 0.3s ease;
+  display: block;
+  padding: 6px 16px;
+  border-radius: 4px;
 }
 
-mat-nav-list a:hover {
-  color: #00a86b !important;
-  background: rgba(255, 255, 255, 0.05) !important;
+.footer-section ul li a:hover {
+  color: #00a86b;
+  background: rgba(255, 255, 255, 0.05);
 }
 
-/* Update these styles in your footer.component.css */
-
+/* Social icons */
 .social-links {
   display: flex;
   gap: 1.5rem;
@@ -68,6 +78,7 @@ mat-nav-list a:hover {
   height: 40px;
   border-radius: 50%;
   background-color: rgba(255, 255, 255, 0.1);
+  text-decoration: none;
 }
 
 .social-links a:hover {
@@ -76,8 +87,16 @@ mat-nav-list a:hover {
   transform: translateY(-3px);
 }
 
-.social-links mat-icon {
-  font-size: 20px;
-  width: 20px;
-  height: 20px;
+.social-links i {
+  font-size: 18px;
+}
+
+/* Footer bottom */
+.footer-bottom {
+  text-align: center;
+  padding: 1.5rem;
+  margin-top: 2rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  color: #888;
+  font-size: 0.9rem;
 }
