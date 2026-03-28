@@ -98,14 +98,21 @@ getProductsByCategory(category: string): Observable<Product[]> {
   );
 }
 
- public constructImageUrl(filename: string): string {
+public constructImageUrl(filename: string): string {
   if (!filename) return 'assets/placeholder.jpg';
-  if (filename.includes('://')) return filename;
   
-  // Plain filename only — build full backend URL
+  // If it's already a full URL (starts with http or https), return it as is
+  if (filename.startsWith('http://') || filename.startsWith('https://')) {
+    return filename;
+  }
+  
+  // If it contains :// (like cloudinary URL), return it as is
+  if (filename.includes('://')) {
+    return filename;
+  }
+  
+  // Only process if it's a plain filename (no http, no ://)
   const cleanFilename = filename.split(/[\\/]/).pop() || filename;
-  
-  // Try using apiUrl instead of baseUrl
   return `${this.apiUrl}/products/images/${cleanFilename}`;
 }
   getUserOrders(userId: number): Observable<any[]> {
