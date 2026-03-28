@@ -92,13 +92,8 @@ export const routes: Routes = [
   loadComponent: () => 
     import('./components/admin-returns/admin-returns.component').then(m => m.AdminReturnsComponent),
   canActivate: [adminGuard]
-}
-  {
-  path: 'about',
-  loadComponent: () =>
-    import('./components/about/about.component').then(m => m.AboutComponent)
 },
-{
+  {
   path: 'contact',
   loadComponent: () =>
     import('./components/contact/contact.component').then(m => m.ContactComponent)
