@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
-import { Router, RouterLink } from '@angular/router';
+import { Router, RouterLink, ActivatedRoute } from '@angular/router';
 import { environment } from '../../../environments/environment';
 
 @Component({
@@ -13,17 +13,21 @@ import { environment } from '../../../environments/environment';
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent implements OnInit {
-  credentials = {
-    email: '',
-    password: ''
-  };
+  credentials = { email: '', password: '' };
   showPassword = false;
   rememberMe = false;
+  private returnUrl = '/';
 
-  constructor(private http: HttpClient, private router: Router) {}
+  constructor(
+    private http: HttpClient,
+    private router: Router,
+    private route: ActivatedRoute
+  ) {}
 
   ngOnInit() {
-    // Load saved email if Remember Me was checked before
+    // Get return URL from query params
+    this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
+    
     const savedEmail = localStorage.getItem('rememberedEmail');
     if (savedEmail) {
       this.credentials.email = savedEmail;
@@ -43,7 +47,6 @@ export class LoginComponent implements OnInit {
         localStorage.setItem('email', res.email);
         localStorage.setItem('userId', res.id);
 
-        // Handle Remember Me
         if (this.rememberMe) {
           localStorage.setItem('rememberedEmail', this.credentials.email);
         } else {
@@ -53,7 +56,8 @@ export class LoginComponent implements OnInit {
         if (res.role === 'ROLE_ADMIN') {
           this.router.navigate(['/admin-dashboard']);
         } else {
-          this.router.navigate(['/']);
+          // Redirect to the page they originally tried to visit
+          this.router.navigateByUrl(this.returnUrl);
         }
       },
       error: (err) => {
