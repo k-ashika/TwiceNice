@@ -97,24 +97,24 @@ export class ProductDetailComponent implements OnInit {
   }
 
   addToCart(): void {
-    const token = localStorage.getItem('token');
-    if (!token) {
-      alert('Please login to add items to cart!');
-      this.router.navigate(['/login'], {
-        queryParams: { returnUrl: `/product/${this.product.id}` }
-      });
-      return;
-    }
-
-    const userId = Number(localStorage.getItem('userId'));
-    this.service.addToCart(this.product.id!).subscribe({
-      next: () => {
-        alert('Product added to cart!');
-        this.cartService.updateCartCount(userId);
-      },
-      error: (err) => console.error('Error adding to cart:', err)
+  const token = localStorage.getItem('token');
+  if (!token) {
+    alert('Please login to add items to cart!');
+    this.router.navigate(['/login'], {
+      queryParams: { returnUrl: `/product/${this.product.id}` }
     });
+    return;
   }
+
+  const userId = Number(localStorage.getItem('userId'));
+  this.service.addToCart(this.product.id!).subscribe({
+    next: () => {
+      this.cartService.incrementCartCount(); // ← instant update!
+      alert('Product added to cart!');
+    },
+    error: (err) => console.error('Error adding to cart:', err)
+  });
+}
 
   checkWishlistStatus(): void {
     if (this.isLoggedIn && localStorage.getItem('token')) {
