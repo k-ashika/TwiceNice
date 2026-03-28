@@ -54,21 +54,19 @@ export class AdminReturnsComponent implements OnInit {
     });
   }
 getImageUrl(imageUrl?: string): string {
-  console.log('Return image URL:', imageUrl);
   if (!imageUrl) return 'assets/placeholder.jpg';
   
-  // If it's already a full URL (Cloudinary, etc.), return it directly
-  if (imageUrl.startsWith('http://') || imageUrl.startsWith('https://')) {
-    return imageUrl;
-  }
+  // Strip any localhost prefix that was incorrectly prepended by the backend
+  const cleaned = imageUrl.replace(
+    /^https?:\/\/localhost:\d+\/api\/products\/images\//,
+    ''
+  );
   
-  // If it contains ://, it's a full URL
-  if (imageUrl.includes('://')) {
-    return imageUrl;
-  }
+  // Now cleaned is the actual Cloudinary URL — return it directly
+  if (cleaned.includes('://')) return cleaned;
   
-  // Only construct URL for plain filenames
-  return this.crudService.constructImageUrl(imageUrl);
+  // Plain filename — build proper URL
+  return this.crudService.constructImageUrl(cleaned);
 }
   handleImageError(event: any) {
   event.target.src = 'assets/placeholder.jpg';
