@@ -54,8 +54,10 @@ export class AdminReturnsComponent implements OnInit {
     });
   }
 getImageUrl(imageUrl?: string): string {
+  console.log('Return image URL:', imageUrl); // Debug
   if (!imageUrl) return 'assets/placeholder.jpg';
   if (imageUrl.includes('://')) return imageUrl;
+  if (imageUrl.includes('http')) return imageUrl;
   return this.crudService.constructImageUrl(imageUrl);
 }
   handleImageError(event: any) {
