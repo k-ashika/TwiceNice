@@ -104,7 +104,9 @@ getProductsByCategory(category: string): Observable<Product[]> {
   
   // Plain filename only — build full backend URL
   const cleanFilename = filename.split(/[\\/]/).pop() || filename;
-  return `${this.baseUrl}/api/products/images/${cleanFilename}`;
+  
+  // Try using apiUrl instead of baseUrl
+  return `${this.apiUrl}/products/images/${cleanFilename}`;
 }
   getUserOrders(userId: number): Observable<any[]> {
     return this.http.get<any[]>(`${this.apiUrl}/user/orders/${userId}`);
