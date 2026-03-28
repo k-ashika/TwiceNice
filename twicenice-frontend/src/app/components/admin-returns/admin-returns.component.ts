@@ -54,8 +54,20 @@ export class AdminReturnsComponent implements OnInit {
     });
   }
 getImageUrl(imageUrl?: string): string {
+  console.log('Return image URL:', imageUrl);
   if (!imageUrl) return 'assets/placeholder.jpg';
-  if (imageUrl.includes('://')) return imageUrl;
+  
+  // If it's already a full URL (Cloudinary, etc.), return it directly
+  if (imageUrl.startsWith('http://') || imageUrl.startsWith('https://')) {
+    return imageUrl;
+  }
+  
+  // If it contains ://, it's a full URL
+  if (imageUrl.includes('://')) {
+    return imageUrl;
+  }
+  
+  // Only construct URL for plain filenames
   return this.crudService.constructImageUrl(imageUrl);
 }
   handleImageError(event: any) {
