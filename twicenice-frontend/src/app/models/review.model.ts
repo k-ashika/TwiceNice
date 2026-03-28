@@ -7,6 +7,8 @@ export interface Review {
   userId: number;
   userName?: string;
   verifiedPurchase?: boolean;
-  product?: Product; 
-  productId?: number; // ✅ Use full Product type here
+  product?: Product;
+  productId?: number;
+  productImageUrl?: string;
+  productName?: string;
 }
