@@ -93,38 +93,39 @@ export class CartComponent implements OnInit {
   }
 
   payWithRazorpay() {
-    const options = {
-      key: 'rzp_test_tDKvqnFFz8rTff',
-      amount: this.total * 100,
-      currency: 'INR',
-      name: 'Twicenice Store',
-      description: 'Thanks for shopping!',
-      handler: (response: any) => {
-        alert('Payment successful: ' + response.razorpay_payment_id);
-        this.cartService.placeOrder(this.userId).subscribe({
-          next: () => {
-            alert('Order placed successfully!');
-            this.loadCart(); 
-          },
-          error: err => {
-            alert('Order failed to place');
-            console.error(err);
-          }
-        });
-      },
-      prefill: {
-        name: 'User',
-        email: 'example@gmail.com',
-        contact: '9999999999'
-      },
-      theme: {
-        color: '#3399cc'
-      }
-    };
+  const options = {
+    key: 'rzp_test_tDKvqnFFz8rTff',
+    amount: this.total * 100,
+    currency: 'INR',
+    name: 'Twicenice Store',
+    description: 'Thanks for shopping!',
+    handler: (response: any) => {
+      alert('Payment successful: ' + response.razorpay_payment_id);
+      this.cartService.placeOrder(this.userId).subscribe({
+        next: () => {
+          this.cartService.resetCartCount(); // ← instant reset to 0!
+          this.cartItems = [];
+          this.total = 0;
+          alert('Order placed successfully!');
+          this.router.navigate(['/orders']);
+        },
+        error: err => {
+          alert('Order failed to place');
+          console.error(err);
+        }
+      });
+    },
+    prefill: {
+      name: 'User',
+      email: 'example@gmail.com',
+      contact: '9999999999'
+    },
+    theme: { color: '#3399cc' }
+  };
 
-    const rzp = new (window as any).Razorpay(options);
-    rzp.open();
-  }
+  const rzp = new (window as any).Razorpay(options);
+  rzp.open();
+}
 
   browseMore(): void {
     this.router.navigate(['/shop']);
