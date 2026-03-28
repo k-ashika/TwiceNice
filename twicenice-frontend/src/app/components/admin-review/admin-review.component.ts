@@ -67,14 +67,18 @@ export class AdminReviewComponent implements OnInit {
     });
   }
 
-  getImageUrl(imageUrl?: string): string {
-  if (!imageUrl) return 'assets/placeholder.jpg';
+  getImageUrl(imagePath: string | undefined): string {
+  if (!imagePath) return 'assets/placeholder.jpg';
   
-  // Strip any localhost prefix that was incorrectly prepended by the backend
-  const cleaned = imageUrl.replace(
+  // Strip any localhost prefix incorrectly stored in the database
+  const cleaned = imagePath.replace(
     /^https?:\/\/localhost:\d+\/api\/products\/images\//,
     ''
   );
+  
+  if (cleaned.includes('://')) return cleaned;
+  return this.crudService.constructImageUrl(cleaned);
+}
   
   // Now cleaned is the actual Cloudinary URL — return it directly
   if (cleaned.includes('://')) return cleaned;
