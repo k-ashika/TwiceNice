@@ -35,46 +35,27 @@ export class AdminReviewComponent implements OnInit {
   this.errorMessage = '';
   this.reviewService.getAllReviewsForAdmin().subscribe({
     next: (data) => {
-      console.log('Reviews received:', JSON.stringify(data));
       this.reviews = data;
-      this.reviews.forEach(review => {
-        console.log('Review:', review.id, 'productId:', review.productId, 'product:', review.product);
-        if (review.productId && !review.product?.imageUrl) {
-          this.fetchProductImage(review.productId, review);
-        }
-      });
       this.isLoading = false;
     },
     error: (err) => {
-      console.error('Reviews error:', err);
+      console.error(err);
       this.errorMessage = 'Failed to load reviews';
       this.isLoading = false;
     }
   });
 }
 
-fetchProductImage(productId: number, review: Review) {
-  console.log('Fetching image for productId:', productId);
-  this.crudService.getProductById(productId).subscribe({
-    next: (product) => {
-      console.log('Product received:', JSON.stringify(product));
-      review.product = product;
-    },
-    error: (err) => {
-      console.error('fetchProductImage failed for productId:', productId, err);
-    }
-  });
+getImageUrl(imagePath: string | undefined): string {
+  if (!imagePath) return 'assets/placeholder.jpg';
+  const cleaned = imagePath.replace(
+    /^https?:\/\/localhost:\d+\/api\/products\/images\//,
+    ''
+  );
+  if (cleaned.includes('://')) return cleaned;
+  return this.crudService.constructImageUrl(cleaned);
 }
-  getImageUrl(imagePath: string | undefined): string {
-    if (!imagePath) return 'assets/placeholder.jpg';
-    const cleaned = imagePath.replace(
-      /^https?:\/\/localhost:\d+\/api\/products\/images\//,
-      ''
-    );
-    if (cleaned.includes('://')) return cleaned;
-    return this.crudService.constructImageUrl(cleaned);
-  }
-
+  
   handleImageError(event: any) {
     event.target.src = 'assets/placeholder.jpg';
     event.target.onerror = null;
