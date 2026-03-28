@@ -28,11 +28,6 @@ export class AdminReviewComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadReviews();
-    setTimeout(() => {
-    if (this.reviews.length > 0) {
-      console.log('First review product image:', this.reviews[0].product?.imageUrl);
-    }
-  }, 1000);
   }
 
   loadReviews() {
@@ -40,7 +35,16 @@ export class AdminReviewComponent implements OnInit {
     this.errorMessage = '';
     this.reviewService.getAllReviewsForAdmin().subscribe({
       next: (data) => {
+        console.log('Full review data:', data); // Debug
         this.reviews = data;
+        
+        // If product data is missing, fetch it
+        this.reviews.forEach(review => {
+          if (review.productId && !review.product?.imageUrl) {
+            this.fetchProductImage(review.productId, review);
+          }
+        });
+        
         this.isLoading = false;
       },
       error: (err) => {
@@ -51,13 +55,29 @@ export class AdminReviewComponent implements OnInit {
     });
   }
 
+  // Temporary fix: fetch product image separately
+  fetchProductImage(productId: number, review: Review) {
+    this.crudService.getProductById(productId).subscribe({
+      next: (product) => {
+        review.product = product;
+        console.log(`Fetched product ${productId} image:`, product.imageUrl);
+      },
+      error: (err) => {
+        console.error(`Failed to fetch product ${productId}:`, err);
+      }
+    });
+  }
+
   getImageUrl(imagePath: string | undefined): string {
-  if (!imagePath) return 'assets/placeholder.jpg';
-  if (imagePath.includes('://')) return imagePath; 
-  return this.crudService.constructImageUrl(imagePath);
-}
+    console.log('Getting image URL for:', imagePath); // Debug
+    if (!imagePath) return 'assets/placeholder.jpg';
+    if (imagePath.includes('://')) return imagePath;
+    if (imagePath.includes('http')) return imagePath;
+    return this.crudService.constructImageUrl(imagePath);
+  }
 
   handleImageError(event: any) {
+    console.log('Image failed to load'); // Debug
     event.target.src = 'assets/placeholder.jpg';
   }
 
