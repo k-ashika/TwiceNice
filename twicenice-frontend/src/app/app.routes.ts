@@ -8,6 +8,7 @@ import { OrdersComponent } from './components/orders/orders.component';
 import { CheckoutComponent } from './components/checkout/checkout.component';
 import { AdminDashboardComponent } from './components/admin-dashboard/admin-dashboard.component';
 import { adminGuard } from './guards/admin.guard';
+import { authGuard } from './guards/auth.guard';
 import { AdminProductsComponent } from './components/admin-products/admin-products.component';
 import { AdminOrdersComponent } from './components/admin-orders/admin-orders.component';
 import { AdminUsersComponent } from './components/admin-users/admin-users.component';
@@ -18,104 +19,111 @@ import { WishlistComponent } from './components/wishlist/wishlist.component';
 import { ReturnRequestComponent } from './components/return-request/return-request.component';
 import { ReturnHistoryComponent } from './components/return-history/return-history.component';
 import { AdminReturnsComponent } from './components/admin-returns/admin-returns.component';
+
 export const routes: Routes = [
   { path: '', component: HomeComponent },
   // { path: 'products', component: ProductsComponent },
-  { path: 'cart', component: CartComponent },
+  { path: 'cart', component: CartComponent, canActivate: [authGuard] },
   // { path: 'register', component: RegisterComponent },
   {
-  path: 'register',
-  loadComponent: () =>
-    import('./components/register/register.component').then(m => m.RegisterComponent)
-}
-,
+    path: 'register',
+    loadComponent: () =>
+      import('./components/register/register.component').then(m => m.RegisterComponent)
+  },
   // { path: 'login', component: LoginComponent },
   {
-  path: 'login',
-  loadComponent: () =>
-    import('./components/login/login.component').then(m => m.LoginComponent)
-}
-,
-  { path: 'orders', component: OrdersComponent },
-  { path: 'checkout', component: CheckoutComponent },
- { path: 'admin-dashboard', component: AdminDashboardComponent, canActivate: [adminGuard] },
-
-
-{ path: 'admin-products', component: AdminProductsComponent, canActivate: [adminGuard] },
-{ path: 'admin-orders', component: AdminOrdersComponent, canActivate: [adminGuard] },
-{ path: 'admin-users', component: AdminUsersComponent, canActivate: [adminGuard] },
-{
-  path: 'admin-profile',
-  loadComponent: () =>
-    import('./components/admin-profile/admin-profile.component').then(m => m.AdminProfileComponent),
-  canActivate: [adminGuard]
-}
-,
-{
-  path: 'shop',
-  loadComponent: () =>
-    import('./components/user-products/user-products.component').then(m => m.UserProductsComponent)
-}
-,
-{ path: 'cart', component: CartComponent },
-{ path: 'orders', loadComponent: () => import('./components/orders/orders.component').then(m => m.OrdersComponent) },
-{
-  path: 'user/profile',
-  loadComponent: () => import('./components/user-profile/user-profile.component').then(m => m.UserProfileComponent)
-},
-{
-  path: 'product/:id',
-  loadComponent: () =>
-    import('./components/product-detail/product-detail.component').then(m => m.ProductDetailComponent)
-},
-
-{
-  path: 'admin-reviews',
-  loadComponent: () => 
-    import('./components/admin-review/admin-review.component').then(m => m.AdminReviewComponent),
-  canActivate: [adminGuard]
-},
-{ path: 'wishlist', loadComponent: () => import('./components/wishlist/wishlist.component').then(m => m.WishlistComponent) }
-,
-{
-  path: 'returns/request/:id',
-  loadComponent: () => 
-    import('./components/return-request/return-request.component').then(m => m.ReturnRequestComponent)
-},
-{
-  path: 'returns/history',
-  loadComponent: () => 
-    import('./components/return-history/return-history.component').then(m => m.ReturnHistoryComponent)
-},
-{
-  path: 'admin-returns',
-  loadComponent: () => 
-    import('./components/admin-returns/admin-returns.component').then(m => m.AdminReturnsComponent),
-  canActivate: [adminGuard]
-},
+    path: 'login',
+    loadComponent: () =>
+      import('./components/login/login.component').then(m => m.LoginComponent)
+  },
+  { path: 'orders', component: OrdersComponent, canActivate: [authGuard] },
+  { path: 'checkout', component: CheckoutComponent, canActivate: [authGuard] },
+  { path: 'admin-dashboard', component: AdminDashboardComponent, canActivate: [adminGuard] },
+  { path: 'admin-products', component: AdminProductsComponent, canActivate: [adminGuard] },
+  { path: 'admin-orders', component: AdminOrdersComponent, canActivate: [adminGuard] },
+  { path: 'admin-users', component: AdminUsersComponent, canActivate: [adminGuard] },
   {
-  path: 'contact',
-  loadComponent: () =>
-    import('./components/contact/contact.component').then(m => m.ContactComponent)
-},
-{
-  path: 'faq',
-  loadComponent: () =>
-    import('./components/faq/faq.component').then(m => m.FaqComponent)
-},
-{
-  path: 'shipping',
-  loadComponent: () =>
-    import('./components/shipping/shipping.component').then(m => m.ShippingComponent)
-},
-{
-  path: 'returns-info',
-  loadComponent: () =>
-    import('./components/returns-info/returns-info.component').then(m => m.ReturnsInfoComponent)
-},
-{
-  path: 'privacy',
-  loadComponent: () =>
-    import('./components/privacy/privacy.component').then(m => m.PrivacyComponent)
-}
+    path: 'admin-profile',
+    loadComponent: () =>
+      import('./components/admin-profile/admin-profile.component').then(m => m.AdminProfileComponent),
+    canActivate: [adminGuard]
+  },
+  {
+    path: 'shop',
+    loadComponent: () =>
+      import('./components/user-products/user-products.component').then(m => m.UserProductsComponent)
+  },
+  { path: 'cart', component: CartComponent, canActivate: [authGuard] },
+  {
+    path: 'orders',
+    loadComponent: () =>
+      import('./components/orders/orders.component').then(m => m.OrdersComponent),
+    canActivate: [authGuard]
+  },
+  {
+    path: 'user/profile',
+    loadComponent: () =>
+      import('./components/user-profile/user-profile.component').then(m => m.UserProfileComponent),
+    canActivate: [authGuard]
+  },
+  {
+    path: 'product/:id',
+    loadComponent: () =>
+      import('./components/product-detail/product-detail.component').then(m => m.ProductDetailComponent)
+  },
+  {
+    path: 'admin-reviews',
+    loadComponent: () =>
+      import('./components/admin-review/admin-review.component').then(m => m.AdminReviewComponent),
+    canActivate: [adminGuard]
+  },
+  {
+    path: 'wishlist',
+    loadComponent: () =>
+      import('./components/wishlist/wishlist.component').then(m => m.WishlistComponent),
+    canActivate: [authGuard]
+  },
+  {
+    path: 'returns/request/:id',
+    loadComponent: () =>
+      import('./components/return-request/return-request.component').then(m => m.ReturnRequestComponent),
+    canActivate: [authGuard]
+  },
+  {
+    path: 'returns/history',
+    loadComponent: () =>
+      import('./components/return-history/return-history.component').then(m => m.ReturnHistoryComponent),
+    canActivate: [authGuard]
+  },
+  {
+    path: 'admin-returns',
+    loadComponent: () =>
+      import('./components/admin-returns/admin-returns.component').then(m => m.AdminReturnsComponent),
+    canActivate: [adminGuard]
+  },
+  {
+    path: 'contact',
+    loadComponent: () =>
+      import('./components/contact/contact.component').then(m => m.ContactComponent)
+  },
+  {
+    path: 'faq',
+    loadComponent: () =>
+      import('./components/faq/faq.component').then(m => m.FaqComponent)
+  },
+  {
+    path: 'shipping',
+    loadComponent: () =>
+      import('./components/shipping/shipping.component').then(m => m.ShippingComponent)
+  },
+  {
+    path: 'returns-info',
+    loadComponent: () =>
+      import('./components/returns-info/returns-info.component').then(m => m.ReturnsInfoComponent)
+  },
+  {
+    path: 'privacy',
+    loadComponent: () =>
+      import('./components/privacy/privacy.component').then(m => m.PrivacyComponent)
+  }
 ];
