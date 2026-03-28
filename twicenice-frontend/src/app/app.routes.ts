@@ -93,4 +93,34 @@ export const routes: Routes = [
     import('./components/admin-returns/admin-returns.component').then(m => m.AdminReturnsComponent),
   canActivate: [adminGuard]
 }
+  {
+  path: 'about',
+  loadComponent: () =>
+    import('./components/about/about.component').then(m => m.AboutComponent)
+},
+{
+  path: 'contact',
+  loadComponent: () =>
+    import('./components/contact/contact.component').then(m => m.ContactComponent)
+},
+{
+  path: 'faq',
+  loadComponent: () =>
+    import('./components/faq/faq.component').then(m => m.FaqComponent)
+},
+{
+  path: 'shipping',
+  loadComponent: () =>
+    import('./components/shipping/shipping.component').then(m => m.ShippingComponent)
+},
+{
+  path: 'returns-info',
+  loadComponent: () =>
+    import('./components/returns-info/returns-info.component').then(m => m.ReturnsInfoComponent)
+},
+{
+  path: 'privacy',
+  loadComponent: () =>
+    import('./components/privacy/privacy.component').then(m => m.PrivacyComponent)
+}
 ];
