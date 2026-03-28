@@ -82,8 +82,8 @@
                     <td>{{ review.id }}</td>
                     <td>{{ review.userName || 'User ' + review.userId }}</td>
                     <td>{{ review.product?.name || 'Product ' + review.productId }}</td>
-                    <td>
-  <img [src]="getImageUrl(review.product?.imageUrl)"
+                   <td>
+  <img [src]="getImageUrl(review.productImageUrl)"
        (error)="handleImageError($event)"
        alt="Product image"
        style="width:60px; height:60px; object-fit:cover;" />
