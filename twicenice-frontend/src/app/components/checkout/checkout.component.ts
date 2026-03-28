@@ -14,7 +14,10 @@ import { environment } from '../../../environments/environment';
 export class CheckoutComponent implements OnInit {
   cartItems: any[] = [];
   totalAmount: number = 0;
-  userId: number = 1; 
+  userId: number = Number(localStorage.getItem('userId')); // ← fix hardcoded 1
+
+  
+}
   constructor(
     private cartService: CartService,
     private http: HttpClient,
