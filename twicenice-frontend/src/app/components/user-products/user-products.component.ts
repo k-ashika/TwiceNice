@@ -54,32 +54,25 @@ export class UserProductsComponent implements OnInit {
     );
   }
 
-  addToCart(product: Product) {
-    // Check if user is logged in
-    const token = localStorage.getItem('token');
-    if (!token) {
-      alert('Please login to add items to cart!');
-      this.router.navigate(['/login'], {
-        queryParams: { returnUrl: '/shop' }
-      });
-      return;
-    }
-
-    const userId = Number(localStorage.getItem('userId'));
-    const cartItem = {
-      userId: userId,
-      productId: product.id!,
-      quantity: 1
-    };
-
-    this.cartService.addToCart(cartItem).subscribe({
-      next: () => {
-        alert('Product added to cart!');
-        this.cartService.updateCartCount(userId);
-      },
-      error: (err) => console.error('Error adding to cart:', err)
-    });
+      addToCart(product: Product) {
+  const token = localStorage.getItem('token');
+  if (!token) {
+    alert('Please login to add items to cart!');
+    this.router.navigate(['/login'], { queryParams: { returnUrl: '/shop' } });
+    return;
   }
+
+  const userId = Number(localStorage.getItem('userId'));
+  const cartItem = { userId, productId: product.id!, quantity: 1 };
+
+  this.cartService.addToCart(cartItem).subscribe({
+    next: () => {
+      this.cartService.incrementCartCount(); // ← instant update!
+      alert('Product added to cart!');
+    },
+    error: (err) => console.error('Error adding to cart:', err)
+  });
+}
 
   sortProducts() {
     switch (this.sortOption) {
