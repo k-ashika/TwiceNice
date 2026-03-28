@@ -35,16 +35,12 @@ export class AdminReviewComponent implements OnInit {
     this.errorMessage = '';
     this.reviewService.getAllReviewsForAdmin().subscribe({
       next: (data) => {
-        console.log('Full review data:', data);
         this.reviews = data;
-        
-        // Fetch product images for each review
         this.reviews.forEach(review => {
           if (review.productId && !review.product?.imageUrl) {
             this.fetchProductImage(review.productId, review);
           }
         });
-        
         this.isLoading = false;
       },
       error: (err) => {
@@ -59,7 +55,6 @@ export class AdminReviewComponent implements OnInit {
     this.crudService.getProductById(productId).subscribe({
       next: (product) => {
         review.product = product;
-        console.log(`Fetched product ${productId} image:`, product.imageUrl);
       },
       error: (err) => {
         console.error(`Failed to fetch product ${productId}:`, err);
@@ -68,28 +63,18 @@ export class AdminReviewComponent implements OnInit {
   }
 
   getImageUrl(imagePath: string | undefined): string {
-  if (!imagePath) return 'assets/placeholder.jpg';
-  
-  // Strip any localhost prefix incorrectly stored in the database
-  const cleaned = imagePath.replace(
-    /^https?:\/\/localhost:\d+\/api\/products\/images\//,
-    ''
-  );
-  
-  if (cleaned.includes('://')) return cleaned;
-  return this.crudService.constructImageUrl(cleaned);
-}
-  
-  // Now cleaned is the actual Cloudinary URL — return it directly
-  if (cleaned.includes('://')) return cleaned;
-  
-  // Plain filename — build proper URL
-  return this.crudService.constructImageUrl(cleaned);
-}
+    if (!imagePath) return 'assets/placeholder.jpg';
+    const cleaned = imagePath.replace(
+      /^https?:\/\/localhost:\d+\/api\/products\/images\//,
+      ''
+    );
+    if (cleaned.includes('://')) return cleaned;
+    return this.crudService.constructImageUrl(cleaned);
+  }
 
   handleImageError(event: any) {
-    console.log('Image failed to load');
     event.target.src = 'assets/placeholder.jpg';
+    event.target.onerror = null;
   }
 
   deleteReview(id: number) {
