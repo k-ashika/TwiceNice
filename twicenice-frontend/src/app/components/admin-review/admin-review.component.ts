@@ -67,23 +67,21 @@ export class AdminReviewComponent implements OnInit {
     });
   }
 
-  getImageUrl(imagePath: string | undefined): string {
-    console.log('Getting image URL for:', imagePath);
-    if (!imagePath) return 'assets/placeholder.jpg';
-    
-    // If it's already a full URL (Cloudinary, etc.), return it directly
-    if (imagePath.startsWith('http://') || imagePath.startsWith('https://')) {
-      return imagePath;
-    }
-    
-    // If it contains ://, it's a full URL
-    if (imagePath.includes('://')) {
-      return imagePath;
-    }
-    
-    // Only construct URL for plain filenames
-    return this.crudService.constructImageUrl(imagePath);
-  }
+  getImageUrl(imageUrl?: string): string {
+  if (!imageUrl) return 'assets/placeholder.jpg';
+  
+  // Strip any localhost prefix that was incorrectly prepended by the backend
+  const cleaned = imageUrl.replace(
+    /^https?:\/\/localhost:\d+\/api\/products\/images\//,
+    ''
+  );
+  
+  // Now cleaned is the actual Cloudinary URL — return it directly
+  if (cleaned.includes('://')) return cleaned;
+  
+  // Plain filename — build proper URL
+  return this.crudService.constructImageUrl(cleaned);
+}
 
   handleImageError(event: any) {
     console.log('Image failed to load');
