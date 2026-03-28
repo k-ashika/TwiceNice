@@ -28,6 +28,11 @@ export class AdminReviewComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadReviews();
+    setTimeout(() => {
+    if (this.reviews.length > 0) {
+      console.log('First review product image:', this.reviews[0].product?.imageUrl);
+    }
+  }, 1000);
   }
 
   loadReviews() {
