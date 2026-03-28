@@ -17,10 +17,30 @@ export class CartService {
 
   constructor(private http: HttpClient) {}
 
+  // Instantly increment count without API call
+  incrementCartCount(): void {
+    this.cartCountSubject.next(this.cartCountSubject.value + 1);
+  }
+
+  // Instantly decrement count without API call
+  decrementCartCount(): void {
+    const current = this.cartCountSubject.value;
+    if (current > 0) this.cartCountSubject.next(current - 1);
+  }
+
+  // Reset count to 0 instantly
+  resetCartCount(): void {
+    this.cartCountSubject.next(0);
+  }
+
+  // Full refresh from API (use on page load only)
   updateCartCount(userId: number): void {
-    this.getCartByUserId(userId).subscribe(cart => {
-      const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
-      this.cartCountSubject.next(totalItems);
+    this.getCartByUserId(userId).subscribe({
+      next: cart => {
+        const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+        this.cartCountSubject.next(totalItems);
+      },
+      error: () => this.cartCountSubject.next(0)
     });
   }
 
@@ -41,7 +61,6 @@ export class CartService {
   }
 
   addToCart(cartItem: Cart): Observable<any> {
-    console.log("Sending cart item to backend:", cartItem);
     return this.http.post(`${this.apiUrl}/api/user/cart/add`, cartItem);
   }
 
