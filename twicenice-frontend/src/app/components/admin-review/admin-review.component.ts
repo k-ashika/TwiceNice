@@ -35,10 +35,10 @@ export class AdminReviewComponent implements OnInit {
     this.errorMessage = '';
     this.reviewService.getAllReviewsForAdmin().subscribe({
       next: (data) => {
-        console.log('Full review data:', data); // Debug
+        console.log('Full review data:', data);
         this.reviews = data;
         
-        // If product data is missing, fetch it
+        // Fetch product images for each review
         this.reviews.forEach(review => {
           if (review.productId && !review.product?.imageUrl) {
             this.fetchProductImage(review.productId, review);
@@ -55,7 +55,6 @@ export class AdminReviewComponent implements OnInit {
     });
   }
 
-  // Temporary fix: fetch product image separately
   fetchProductImage(productId: number, review: Review) {
     this.crudService.getProductById(productId).subscribe({
       next: (product) => {
@@ -69,15 +68,25 @@ export class AdminReviewComponent implements OnInit {
   }
 
   getImageUrl(imagePath: string | undefined): string {
-    console.log('Getting image URL for:', imagePath); // Debug
+    console.log('Getting image URL for:', imagePath);
     if (!imagePath) return 'assets/placeholder.jpg';
-    if (imagePath.includes('://')) return imagePath;
-    if (imagePath.includes('http')) return imagePath;
+    
+    // If it's already a full URL (Cloudinary, etc.), return it directly
+    if (imagePath.startsWith('http://') || imagePath.startsWith('https://')) {
+      return imagePath;
+    }
+    
+    // If it contains ://, it's a full URL
+    if (imagePath.includes('://')) {
+      return imagePath;
+    }
+    
+    // Only construct URL for plain filenames
     return this.crudService.constructImageUrl(imagePath);
   }
 
   handleImageError(event: any) {
-    console.log('Image failed to load'); // Debug
+    console.log('Image failed to load');
     event.target.src = 'assets/placeholder.jpg';
   }
 
