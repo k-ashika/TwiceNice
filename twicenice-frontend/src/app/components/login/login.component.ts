@@ -1,6 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule, NgForm } from '@angular/forms';
+import { FormsModule } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { Router, RouterLink } from '@angular/router';
 import { environment } from '../../../environments/environment';
@@ -12,14 +12,24 @@ import { environment } from '../../../environments/environment';
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css']
 })
-export class LoginComponent {
+export class LoginComponent implements OnInit {
   credentials = {
     email: '',
     password: ''
   };
   showPassword = false;
+  rememberMe = false;
 
   constructor(private http: HttpClient, private router: Router) {}
+
+  ngOnInit() {
+    // Load saved email if Remember Me was checked before
+    const savedEmail = localStorage.getItem('rememberedEmail');
+    if (savedEmail) {
+      this.credentials.email = savedEmail;
+      this.rememberMe = true;
+    }
+  }
 
   togglePassword() {
     this.showPassword = !this.showPassword;
@@ -32,6 +42,13 @@ export class LoginComponent {
         localStorage.setItem('role', res.role);
         localStorage.setItem('email', res.email);
         localStorage.setItem('userId', res.id);
+
+        // Handle Remember Me
+        if (this.rememberMe) {
+          localStorage.setItem('rememberedEmail', this.credentials.email);
+        } else {
+          localStorage.removeItem('rememberedEmail');
+        }
 
         if (res.role === 'ROLE_ADMIN') {
           this.router.navigate(['/admin-dashboard']);
