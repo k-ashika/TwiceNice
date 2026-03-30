@@ -1,5 +1,5 @@
 <div class="container mt-4">
- 
+
   <div class="d-flex justify-content-between align-items-center mb-4">
     <h2 class="mb-0 text-success fw-bold">
       <i class="bi bi-cart3 me-2"></i>Your Thrift Cart
@@ -81,18 +81,36 @@
 
   <div *ngIf="cartItems.length > 0"
        class="bg-success bg-opacity-10 p-3 rounded-3 border border-success border-opacity-25">
+
     <div class="d-flex justify-content-between mb-2">
       <span>Subtotal</span>
       <span class="fw-bold">₹{{ total | number:'1.2-2' }}</span>
     </div>
-    <div class="d-flex justify-content-between mb-3">
+
+    <!-- ── Shipping row: Free if ≥ ₹999, else ₹99 ── -->
+    <div class="d-flex justify-content-between mb-1">
       <span>Shipping</span>
-      <span class="text-success">Free</span>
+      <span *ngIf="isFreeShipping" class="text-success fw-semibold">
+        <i class="bi bi-truck me-1"></i>Free
+      </span>
+      <span *ngIf="!isFreeShipping" class="text-muted">
+        ₹{{ shippingFee | number:'1.2-2' }}
+      </span>
     </div>
+
+    <!-- Hint to get free shipping when below threshold -->
+    <div *ngIf="!isFreeShipping" class="mb-2">
+      <small class="text-muted">
+        <i class="bi bi-info-circle me-1"></i>
+        Add ₹{{ (FREE_SHIPPING_THRESHOLD - total) | number:'1.0-0' }} more to get free shipping!
+      </small>
+    </div>
+
     <hr class="border-success border-opacity-25">
+
     <div class="d-flex justify-content-between align-items-center mb-3">
       <h6 class="mb-0 text-success">Total</h6>
-      <h4 class="mb-0 text-success">₹{{ total | number:'1.2-2' }}</h4>
+      <h4 class="mb-0 text-success">₹{{ finalTotal | number:'1.2-2' }}</h4>
     </div>
 
     <div class="d-grid gap-2">
@@ -104,4 +122,5 @@
       </button>
     </div>
   </div>
+
 </div>
