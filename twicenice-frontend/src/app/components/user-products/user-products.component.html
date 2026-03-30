@@ -11,7 +11,7 @@
           <option *ngFor="let cat of categories" [value]="cat">{{ cat }}</option>
         </select>
       </div>
-      
+
       <div class="col-md-3">
         <label>Max Price (₹)</label>
         <div class="d-flex align-items-center">
@@ -19,12 +19,12 @@
           <span class="price-display">₹{{ priceLimit }}</span>
         </div>
       </div>
-      
+
       <div class="col-md-3">
         <label>Search Products</label>
         <input type="text" class="form-control" placeholder="Search by name..." [(ngModel)]="searchTerm" (input)="filterProducts()">
       </div>
-      
+
       <div class="col-md-3">
         <label>Sort By</label>
         <select [(ngModel)]="sortOption" (change)="sortProducts()" class="form-select">
@@ -43,18 +43,27 @@
     <div *ngFor="let product of paginatedProducts" class="card">
       <div class="card-img-container">
         <a [routerLink]="['/product', product.id]">
-          <img class="card-img-top" [src]="product.imageUrl" alt="{{ product.name }}" 
+          <img class="card-img-top" [src]="product.imageUrl" alt="{{ product.name }}"
                onerror="this.src='https://via.placeholder.com/300?text=No+Image'">
         </a>
+        <!-- Wishlist heart button on image corner -->
+        <button
+          class="wishlist-btn"
+          (click)="toggleWishlist(product)"
+          [class.wishlisted]="isWishlisted(product.id!)"
+          [title]="isWishlisted(product.id!) ? 'Remove from wishlist' : 'Add to wishlist'">
+          <i class="fas fa-heart"></i>
+        </button>
       </div>
+
       <div class="card-body">
         <h5 class="card-title">{{ product.name }}</h5>
         <p class="card-text">{{ product.description }}</p>
         <div class="mt-auto">
           <p class="price">₹{{ product.price }}</p>
           <p *ngIf="product.stock === 0" class="out-of-stock">Out of Stock</p>
-          <button class="add-to-cart-btn" 
-                  (click)="addToCart(product)" 
+          <button class="add-to-cart-btn"
+                  (click)="addToCart(product)"
                   [disabled]="product.stock === 0">
             <i class="fas fa-shopping-cart"></i> Add to Cart
           </button>
