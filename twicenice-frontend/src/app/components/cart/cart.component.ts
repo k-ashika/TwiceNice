@@ -17,9 +17,12 @@ import { WishlistService } from '../../services/wishlist.service';
 })
 export class CartComponent implements OnInit {
   cartItems: Cart[] = [];
-  productsMap: Map<number, Product> = new Map(); 
+  productsMap: Map<number, Product> = new Map();
   total = 0;
   userId: number = Number(localStorage.getItem('userId'));
+
+  readonly SHIPPING_FEE = 99;           // fixed fee for orders below ₹999
+  readonly FREE_SHIPPING_THRESHOLD = 999; // free shipping above this
 
   constructor(
     private cartService: CartService,
@@ -32,12 +35,25 @@ export class CartComponent implements OnInit {
     this.loadCart();
   }
 
+  // ── Shipping helpers ──────────────────────────────────
+  get shippingFee(): number {
+    return this.total >= this.FREE_SHIPPING_THRESHOLD ? 0 : this.SHIPPING_FEE;
+  }
+
+  get finalTotal(): number {
+    return this.total + this.shippingFee;
+  }
+
+  get isFreeShipping(): boolean {
+    return this.total >= this.FREE_SHIPPING_THRESHOLD;
+  }
+  // ─────────────────────────────────────────────────────
+
   loadCart() {
     this.cartService.getCartByUserId(this.userId).subscribe({
       next: (data: Cart[]) => {
         this.cartItems = data;
         const productIds = [...new Set(data.map(item => item.productId))];
-
         if (productIds.length > 0) {
           this.loadProducts(productIds);
         } else {
@@ -74,58 +90,58 @@ export class CartComponent implements OnInit {
   increment(cartItem: Cart) {
     this.cartService.incrementQuantity(this.userId, cartItem.productId).subscribe(() => {
       this.loadCart();
-      this.cartService.updateCartCount(this.userId); 
+      this.cartService.updateCartCount(this.userId);
     });
   }
 
   decrement(cartItem: Cart) {
     this.cartService.decrementOrRemove(this.userId, cartItem.productId).subscribe(() => {
       this.loadCart();
-      this.cartService.updateCartCount(this.userId); 
+      this.cartService.updateCartCount(this.userId);
     });
   }
 
   clearCart() {
     this.cartService.clearCart(this.userId).subscribe(() => {
       this.loadCart();
-      this.cartService.updateCartCount(this.userId); 
+      this.cartService.updateCartCount(this.userId);
     });
   }
 
   payWithRazorpay() {
-  const options = {
-    key: 'rzp_test_tDKvqnFFz8rTff',
-    amount: this.total * 100,
-    currency: 'INR',
-    name: 'Twicenice Store',
-    description: 'Thanks for shopping!',
-    handler: (response: any) => {
-      alert('Payment successful: ' + response.razorpay_payment_id);
-      this.cartService.placeOrder(this.userId).subscribe({
-        next: () => {
-          this.cartService.resetCartCount(); // ← instant reset to 0!
-          this.cartItems = [];
-          this.total = 0;
-          alert('Order placed successfully!');
-          this.router.navigate(['/orders']);
-        },
-        error: err => {
-          alert('Order failed to place');
-          console.error(err);
-        }
-      });
-    },
-    prefill: {
-      name: 'User',
-      email: 'example@gmail.com',
-      contact: '9999999999'
-    },
-    theme: { color: '#3399cc' }
-  };
+    const options = {
+      key: 'rzp_test_tDKvqnFFz8rTff',
+      amount: this.finalTotal * 100,   // ← uses finalTotal (includes shipping if < ₹999)
+      currency: 'INR',
+      name: 'Twicenice Store',
+      description: 'Thanks for shopping!',
+      handler: (response: any) => {
+        alert('Payment successful: ' + response.razorpay_payment_id);
+        this.cartService.placeOrder(this.userId).subscribe({
+          next: () => {
+            this.cartService.resetCartCount();
+            this.cartItems = [];
+            this.total = 0;
+            alert('Order placed successfully!');
+            this.router.navigate(['/orders']);
+          },
+          error: err => {
+            alert('Order failed to place');
+            console.error(err);
+          }
+        });
+      },
+      prefill: {
+        name: 'User',
+        email: 'example@gmail.com',
+        contact: '9999999999'
+      },
+      theme: { color: '#3399cc' }
+    };
 
-  const rzp = new (window as any).Razorpay(options);
-  rzp.open();
-}
+    const rzp = new (window as any).Razorpay(options);
+    rzp.open();
+  }
 
   browseMore(): void {
     this.router.navigate(['/shop']);
