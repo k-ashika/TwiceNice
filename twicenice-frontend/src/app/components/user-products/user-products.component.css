@@ -35,9 +35,9 @@ h3::after {
   position: absolute;
   bottom: -8px;
   left: 0;
-  width: 60px;
-  height: 4px;
-  background: #198754;
+  width: 60px;   /* keep it short, not full width */
+  height: 3px;
+  background: var(--primary-green);
   border-radius: 2px;
 }
 
