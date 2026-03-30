@@ -41,21 +41,68 @@ h3::after {
   border-radius: 2px;
 }
 
-/* Filter Section */
+/* Filter Section - Fixed */
 .filter-section {
-  background-color: var(--light-bg);
-  padding: 20px;
+  background: linear-gradient(135deg, #f8f9fa 0%, #e8f5e9 100%);
+  padding: 24px 28px;
   border-radius: var(--border-radius);
   margin-bottom: 30px;
   box-shadow: var(--box-shadow);
+  border: 1px solid rgba(25, 135, 84, 0.1);
+}
+
+.filter-section .row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;  /* aligns all filter items to bottom */
+  gap: 0;
+}
+
+.filter-section .col-md-3 {
+  flex: 0 0 25%;
+  max-width: 25%;
+  padding: 0 12px;
+  box-sizing: border-box;
 }
 
 .filter-section label {
   display: block;
-  margin-bottom: 8px;
+  margin-bottom: 6px;
   font-weight: 600;
-  color: #198754;
-  font-size: 0.9rem;
+  color: var(--primary-green);
+  font-size: 0.82rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* Price Range Row Fix */
+.filter-section .d-flex {
+  display: flex !important;
+  align-items: center;
+  gap: 10px;
+}
+
+.filter-section .d-flex .form-range {
+  flex: 1;
+  margin-bottom: 0;
+}
+
+.price-display {
+  font-weight: 700;
+  color: var(--primary-green);
+  white-space: nowrap;
+  font-size: 0.95rem;
+  min-width: 60px;
+  text-align: right;
+}
+
+/* Responsive fix */
+@media (max-width: 768px) {
+  .filter-section .col-md-3 {
+    flex: 0 0 100%;
+    max-width: 100%;
+    margin-bottom: 16px;
+  }
 }
 
 .form-select, .form-control {
